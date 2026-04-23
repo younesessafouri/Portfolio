@@ -56,7 +56,7 @@ const About = () => (
           </div>
           <DataRow k="Role" v={PROFILE.role} />
           <DataRow k="Lab" v={PROFILE.lab} />
-          <DataRow k="Advisor" v="L. Risser" />
+          <DataRow k="Advisors" v="Laurent Risser, Laure Raynaud, Luciano Drozda" />
           <DataRow k="Since" v="Oct. 2025" />
           <div style={{ height: 28 }} />
           <DataRow k="Currently reading" v="East of Eden — Steinbeck" />
