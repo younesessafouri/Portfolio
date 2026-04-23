@@ -157,7 +157,7 @@ const READING = [
 
 const LISTENING = [
   "The Beatles", "The Doors", "Fleetwood Mac", "Bob Dylan",
-  "Leonard Cohen", "Nick Drake", "Joni Mitchell",
+  "Kendrick Lamar"
 ];
 
 Object.assign(window, { PROFILE, BIO, EDUCATION, PROJECTS, PUBLICATIONS, TALKS, TEACHING, SKILLS, WRITING, READING, LISTENING });
