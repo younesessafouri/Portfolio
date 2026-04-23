@@ -12,6 +12,7 @@ const PROFILE = {
     { label: "ORCID", href: "https://orcid.org/0009-0005-9830-409X" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/younes-essafouri/" },
     { label: "GitHub", href: "https://github.com/YounesEssafouri" },
+    { label: "CV · PDF", href: "assets/YounesEssafouri_CV.pdf" },
   ],
 };
 

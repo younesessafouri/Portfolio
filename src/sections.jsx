@@ -42,7 +42,7 @@ const About = () => (
           ))}
           <div style={{ marginTop: 32, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
             <a href={`mailto:${PROFILE.email}`} className="btn-pri">Get in touch <Arrow /></a>
-            <a href="#" className="btn-sec">Download CV</a>
+            <a href="assets/YounesEssafouri_CV.pdf" target="_blank" rel="noreferrer" download className="btn-sec">Download CV</a>
           </div>
         </div>
         <aside style={{ fontFamily: 'var(--mono)', fontSize: 13, lineHeight: 1.9 }}>
