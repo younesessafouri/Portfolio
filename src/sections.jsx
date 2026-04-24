@@ -28,7 +28,7 @@ const About = () => (
   <section id="about" style={sectionStyles.wrap}>
     <div style={sectionStyles.inner}>
       <SectionEyebrow num="01">About</SectionEyebrow>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 96, alignItems: 'start' }}>
+      <div className="two-col" style={{ display: 'grid', gridTemplateColumns: '1.1fr 1fr', gap: 96, alignItems: 'start' }}>
         <div>
           <h2 style={sectionStyles.h2}>
             I build small instruments<br/>
@@ -56,7 +56,7 @@ const About = () => (
           </div>
           <DataRow k="Role" v={PROFILE.role} />
           <DataRow k="Lab" v={PROFILE.lab} />
-          <DataRow k="Advisors" v="Laurent Risser, Laure Raynaud, Luciano Drozda" />
+          <DataRow k="Advisor" v="L. Risser" />
           <DataRow k="Since" v="Oct. 2025" />
           <div style={{ height: 28 }} />
           <DataRow k="Currently reading" v="East of Eden — Steinbeck" />
@@ -88,7 +88,9 @@ const Research = () => {
         <SectionEyebrow num="02">Research · Projects</SectionEyebrow>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: 48, gap: 40, flexWrap: 'wrap' }}>
           <h2 style={{ ...sectionStyles.h2, marginBottom: 0, maxWidth: 780 }}>
-           Projects
+            Six projects at the<br/>
+            edge of mathematics,<br/>
+            code, and physics.
           </h2>
           <div style={{ width: 180 }}>
             <SensitivityGrid cols={12} rows={8} />
@@ -119,6 +121,7 @@ const ProjectRow = ({ project, active, onEnter, onLeave }) => {
   return (
     <div
       ref={ref}
+      className="project-row"
       onMouseEnter={onEnter} onMouseLeave={onLeave}
       onMouseMove={onMove}
       onClick={() => setOpen(!open)}
@@ -172,15 +175,15 @@ const ProjectRow = ({ project, active, onEnter, onLeave }) => {
           </div>
         </div>
       </div>
-      <div style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--fg-mute)' }}>{project.year}</div>
-      <div style={{ fontFamily: 'var(--mono)', fontSize: 12 }}>
+      <div className="pr-year" style={{ fontFamily: 'var(--mono)', fontSize: 12, color: 'var(--fg-mute)' }}>{project.year}</div>
+      <div className="pr-status" style={{ fontFamily: 'var(--mono)', fontSize: 12 }}>
         <span style={{
           padding: '3px 10px', border: '1px solid var(--rule)', borderRadius: 999,
           color: project.status === 'Active' ? 'var(--accent)' : 'var(--fg-soft)',
           borderColor: project.status === 'Active' ? 'var(--accent)' : 'var(--rule)',
         }}>{project.status}</span>
       </div>
-      <div style={{
+      <div className="pr-plus" style={{
         fontFamily: 'var(--mono)', textAlign: 'right', color: 'var(--fg-mute)',
         transform: open ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform .3s',
       }}>+</div>
@@ -209,7 +212,7 @@ const Publications = () => {
         </div>
         <ol style={{ listStyle: 'none' }}>
           {filtered.map((p, i) => (
-            <li key={i} style={{
+            <li key={i} className="pub-row" style={{
               borderTop: '1px solid var(--rule)',
               padding: '28px 0',
               display: 'grid', gridTemplateColumns: '60px 1fr 120px', gap: 24,
@@ -238,7 +241,7 @@ const Publications = () => {
                   </div>
                 )}
               </div>
-              <div style={{ textAlign: 'right', fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--fg-mute)', textTransform: 'uppercase', letterSpacing: '.1em' }}>
+              <div className="pub-type" style={{ textAlign: 'right', fontFamily: 'var(--mono)', fontSize: 11, color: 'var(--fg-mute)', textTransform: 'uppercase', letterSpacing: '.1em' }}>
                 {p.type}
               </div>
             </li>
@@ -259,7 +262,7 @@ const EducationSection = () => (
         Grenoble, KTH, Toulouse.
       </h2>
       {EDUCATION.map((e, i) => (
-        <div key={i} style={{
+        <div key={i} className="edu-row" style={{
           display: 'grid', gridTemplateColumns: '140px 1fr 1fr', gap: 24,
           padding: '22px 0', borderTop: '1px solid var(--rule)',
           alignItems: 'baseline',
@@ -279,7 +282,7 @@ const EducationSection = () => (
         <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '.22em', textTransform: 'uppercase', color: 'var(--fg-mute)', marginBottom: 20 }}>
           Tools of the trade
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px 40px' }}>
+        <div className="skills-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px 40px' }}>
           {[
             ['Languages', SKILLS.languages],
             ['Libraries', SKILLS.libraries],
@@ -308,13 +311,13 @@ const TalksTeaching = () => (
   <section id="talks" style={sectionStyles.wrap}>
     <div style={sectionStyles.inner}>
       <SectionEyebrow num="05">Teaching · Talks</SectionEyebrow>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 80 }}>
+      <div className="teach-grid" style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 80 }}>
         <div>
           <h3 style={{ fontFamily: 'var(--display)', fontSize: 32, marginBottom: 28, fontWeight: 400 }}>
             Teaching
           </h3>
           {TEACHING.map((t, i) => (
-            <div key={i} style={{
+            <div key={i} className="teach-row" style={{
               padding: '22px 0', borderTop: '1px solid var(--rule)',
               display: 'grid', gridTemplateColumns: '90px 1fr 60px', gap: 20,
               alignItems: 'baseline',
@@ -325,7 +328,7 @@ const TalksTeaching = () => (
                 <div style={{ fontSize: 13, color: 'var(--fg-mute)', marginTop: 4 }}>{t.where}</div>
                 {t.desc && <div style={{ fontSize: 14, color: 'var(--fg-soft)', marginTop: 8, maxWidth: 480, lineHeight: 1.55 }}>{t.desc}</div>}
               </div>
-              <span style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-mute)', textAlign: 'right' }}>{t.role}</span>
+              <span className="t-role" style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--fg-mute)', textAlign: 'right' }}>{t.role}</span>
             </div>
           ))}
           <div style={{ borderTop: '1px solid var(--rule)' }} />
@@ -393,7 +396,7 @@ const Writing = () => {
         <h2 style={{ ...sectionStyles.h2, marginBottom: 0 }}>Notes in the margin.</h2>
         <Compass size={52} />
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 0, borderTop: '1px solid var(--rule)' }}>
+      <div className="writing-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 0, borderTop: '1px solid var(--rule)' }}>
         {WRITING.map((w, i) => (
           <a key={i} href="#"
             onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(null)}
@@ -471,7 +474,7 @@ const Personal = () => (
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginTop: 72 }}>
+      <div className="photos-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginTop: 72 }}>
         {[
           { src: 'photos/montreux.jpg', caption: 'Montreux · Switzerland' },
           { src: 'photos/tetouan.jpg', caption: 'Tétouan · Morocco' },
@@ -565,6 +568,7 @@ const Contact = () => (
 // NAV
 const Nav = ({ theme, toggleTheme }) => {
   const [scrolled, setScrolled] = React.useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll);
@@ -599,9 +603,9 @@ const Nav = ({ theme, toggleTheme }) => {
         display: 'flex', gap: 4, alignItems: 'center',
         fontFamily: 'var(--mono)', fontSize: 12, letterSpacing: '.04em',
       }}>
-        <div style={{ display: 'flex', gap: 4 }} className="nav-links">
+        <div style={{ display: 'flex', gap: 4 }} className={menuOpen ? "nav-links open" : "nav-links"}>
           {links.map(([l, h]) => (
-            <a key={l} href={h} style={{
+            <a key={l} href={h} onClick={() => setMenuOpen(false)} style={{
               padding: '8px 12px', borderRadius: 6, color: 'var(--fg-soft)',
             }} className="nav-link">
               {l}
@@ -610,6 +614,9 @@ const Nav = ({ theme, toggleTheme }) => {
         </div>
         <button onClick={toggleTheme} className="icon-btn" aria-label="Toggle theme">
           {theme === 'dark' ? '☾' : '☀'}
+        </button>
+        <button onClick={() => setMenuOpen(!menuOpen)} className="mobile-menu-btn" aria-label="Menu">
+          {menuOpen ? '✕' : '☰'}
         </button>
       </div>
     </nav>
