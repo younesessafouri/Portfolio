@@ -88,9 +88,7 @@ const Research = () => {
         <SectionEyebrow num="02">Research · Projects</SectionEyebrow>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', marginBottom: 48, gap: 40, flexWrap: 'wrap' }}>
           <h2 style={{ ...sectionStyles.h2, marginBottom: 0, maxWidth: 780 }}>
-            Six projects at the<br/>
-            edge of mathematics,<br/>
-            code, and physics.
+           Projects
           </h2>
           <div style={{ width: 180 }}>
             <SensitivityGrid cols={12} rows={8} />
