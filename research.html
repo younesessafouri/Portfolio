@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Research — Younes Essafouri</title>
+<meta name="description" content="Gradient-based attribution methods for explainable AI in numerical weather prediction: SmoothGrad, VarGrad, WassersteinGrad, applied to GraphCast, UNETR++, AIFS and AROME.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230a0d15%22/%3E%3Cpath%20d%3D%22M4%2012c4%200%204%203%208%203s4-3%208-3%204%203%208%203%22%20stroke%3D%22%236fe3c4%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M4%2020c4%200%204%203%208%203s4-3%208-3%204%203%208%203%22%20stroke%3D%22%235aa9ff%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body id="top">
+
+<nav class="site-nav">
+  <div class="container">
+    <a href="index.html" class="brand"><span class="brand-mark">//</span> Younes Essafouri</a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="research.html">Research</a>
+      <a class="nav-link" href="publications.html">Publications</a>
+      <a class="nav-link" href="index.html#personal">Beyond the Lab</a>
+      <a class="nav-link" href="index.html#contact">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" data-theme-toggle aria-pressed="false" aria-label="Toggle light/dark theme" title="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12h2.6M18.9 12h2.6M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+      </button>
+      <button class="icon-btn mobile-menu-btn" data-mobile-toggle aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<header style="padding: 150px 0 70px; border-bottom: 1px solid var(--rule-soft);">
+  <div class="container" style="max-width: 880px;">
+    <div class="eyebrow"><span class="dot"></span> Research</div>
+    <h1 style="font-size: clamp(36px,5.4vw,64px); font-weight: 400; margin-bottom: 24px;">Can a weather model's reasoning survive a second opinion?</h1>
+    <p style="font-size: 18px; line-height: 1.6; max-width: 680px; color: var(--ink-soft);">Deep learning forecasters like GraphCast and AIFS now rival or beat classical numerical weather prediction on many metrics — but their internal reasoning is opaque. My PhD builds attribution methods that trace a forecast back to the input fields that produced it, so operational meteorologists can tell physically grounded reasoning from spurious correlation.</p>
+  </div>
+</header>
+
+<section>
+  <div class="container" style="max-width: 880px;">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> Method</div>
+      <h2>From a raw gradient to a trustworthy explanation</h2>
+      <p>Attribution methods for physical fields face a specific problem: raw input gradients are noisy, and models predicting continuous dynamic fields (not single class scores) don't fit classical saliency recipes cleanly. The pipeline below is how I get from "here's a forecast" to "here's what drove it."</p>
+    </div>
+    <div class="pipeline reveal">
+      <div class="pipeline-step">
+        <div class="step-num">01</div>
+        <h4>Input field</h4>
+        <p>Geopotential, humidity, wind, temperature — pressure-level fields fed to the forecaster (ERA5-derived, via xarray).</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">02</div>
+        <h4>Forward model</h4>
+        <p>GraphCast, UNETR++, AIFS or AROME predicts the next physical state.</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">03</div>
+        <h4>Noisy gradients</h4>
+        <p>Backpropagate to the input. SmoothGrad / VarGrad average many noised passes to reduce variance.</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">04</div>
+        <h4>WassersteinGrad</h4>
+        <p>Wasserstein barycenters aggregate attribution distributions across samples, denoising explanations for dynamic fields.</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">05</div>
+        <h4>Explanation map</h4>
+        <p>A spatially coherent attribution field, legible to a forecaster reading it like a weather chart.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> Scope</div>
+      <h2>Methods &amp; models</h2>
+      <p>The attribution toolkit and the deep learning weather models it's been tested against.</p>
+    </div>
+    <div class="two-col reveal">
+      <div>
+        <h3 style="font-size: 16px; margin-bottom: 14px;">Attribution methods</h3>
+        <div class="interest-list" style="margin-bottom: 24px;">
+          <span class="tag tag-accent">SmoothGrad</span>
+          <span class="tag tag-accent">VarGrad</span>
+          <span class="tag tag-accent">Wasserstein barycenters</span>
+          <span class="tag tag-accent">WassersteinGrad</span>
+        </div>
+        <h3 style="font-size: 16px; margin-bottom: 14px;">Weather &amp; deep learning models studied</h3>
+        <div class="interest-list">
+          <span class="tag">GraphCast</span>
+          <span class="tag">UNETR++</span>
+          <span class="tag">AIFS</span>
+          <span class="tag">AROME</span>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size: 16px; margin-bottom: 14px;">Tech stack</h3>
+        <div class="stack-strip">
+          <div class="stack-item"><span class="stack-name">Python</span><span class="stack-role">Core language</span></div>
+          <div class="stack-item"><span class="stack-name">PyTorch</span><span class="stack-role">Model training &amp; autograd</span></div>
+          <div class="stack-item"><span class="stack-name">Py4cast</span><span class="stack-role">Weather-model training framework</span></div>
+          <div class="stack-item"><span class="stack-name">Anemoi</span><span class="stack-role">ECMWF ML-NWP toolkit</span></div>
+          <div class="stack-item"><span class="stack-name">xarray</span><span class="stack-role">Gridded / ERA5 climate data</span></div>
+          <div class="stack-item"><span class="stack-name">Matplotlib</span><span class="stack-role">Attribution &amp; field visualization</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> Selected work</div>
+      <h2>Projects</h2>
+      <p>The PhD research sits alongside earlier work spanning physics-informed ML, neural operators, NLP, and numerical methods.</p>
+    </div>
+    <div class="reveal">
+      <div class="project-row">
+        <div class="pr-id">01</div>
+        <div>
+          <h3>Explaining Neural Weather Models</h3>
+          <div class="pr-sub">Gradient-based attributions for deep forecasters — PhD research</div>
+          <p class="pr-desc">A framework that interrogates deep forecasting models by tracing the influence of input fields (geopotential, humidity, wind) onto predicted variables via SmoothGrad, VarGrad and WassersteinGrad. The goal: separate real physical reasoning from spurious correlation, and make the results legible to operational meteorologists.</p>
+          <div class="pr-tags"><span class="tag tag-accent">XAI</span><span class="tag">PyTorch</span><span class="tag">ERA5</span><span class="tag">Attribution</span></div>
+        </div>
+        <div class="pr-year">2025 — present</div>
+      </div>
+      <div class="project-row">
+        <div class="pr-id">02</div>
+        <div>
+          <h3>Physics-Informed ML for Cardiac Modelling</h3>
+          <div class="pr-sub">Research internship at Dassault Systèmes</div>
+          <p class="pr-desc">Investigated physics-informed machine learning methods for cardiac physics modelling, combining differential-equation priors with data-driven surrogates.</p>
+          <div class="pr-tags"><span class="tag">PINN</span><span class="tag">Cardiac</span><span class="tag">Simulation</span></div>
+        </div>
+        <div class="pr-year">Feb — Aug 2025</div>
+      </div>
+      <div class="project-row">
+        <div class="pr-id">03</div>
+        <div>
+          <h3>Neural Operators for Kuramoto–Sivashinsky</h3>
+          <div class="pr-sub">Hubert Curien laboratory</div>
+          <p class="pr-desc">Developed physics-informed neural networks as surrogates for expensive numerical solvers of the Kuramoto–Sivashinsky equations, and explored Fourier Neural Operators (FNOs) for efficient spatial-temporal modelling on continuous domains.</p>
+          <div class="pr-tags"><span class="tag">PINN</span><span class="tag">FNO</span><span class="tag">PDE</span></div>
+        </div>
+        <div class="pr-year">Jun — Aug 2024</div>
+      </div>
+      <div class="project-row">
+        <div class="pr-id">04</div>
+        <div>
+          <h3>Embedded Topic Modelling</h3>
+          <div class="pr-sub">Reproducing Dieng et al. (ICML 2019)</div>
+          <p class="pr-desc">Implemented the Embedded Topic Model from scratch and ran a comparative analysis against Latent Dirichlet Allocation on the 20 Newsgroups dataset, evaluating interpretability and topic coherence.</p>
+          <div class="pr-tags"><span class="tag">NLP</span><span class="tag">PyTorch</span><span class="tag">Topic Models</span></div>
+        </div>
+        <div class="pr-year">Nov — Dec 2024</div>
+      </div>
+      <div class="project-row">
+        <div class="pr-id">05</div>
+        <div>
+          <h3>Neural Networks for Finance PDEs</h3>
+          <div class="pr-sub">Black–Scholes via the Feynman–Kac method</div>
+          <p class="pr-desc">Used neural networks and the Feynman–Kac method to numerically solve the Black–Scholes equation and price call options, exploring how deep learning can stand in for classical PDE solvers.</p>
+          <div class="pr-tags"><span class="tag">PDE</span><span class="tag">Finance</span><span class="tag">TensorFlow</span></div>
+        </div>
+        <div class="pr-year">Feb — May 2024</div>
+      </div>
+      <div class="project-row">
+        <div class="pr-id">06</div>
+        <div>
+          <h3>Deca Compiler &amp; Math Library</h3>
+          <div class="pr-sub">Software engineering project</div>
+          <p class="pr-desc">A Java-based compiler for Deca, an object-oriented sub-language of Java, together with a small math library for accurate trigonometric functions written in Deca.</p>
+          <div class="pr-tags"><span class="tag">Java</span><span class="tag">ANTLR</span><span class="tag">Compilers</span></div>
+        </div>
+        <div class="pr-year">Dec 2023 — Jan 2024</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-bottom: none; padding-bottom: 90px;">
+  <div class="container">
+    <div class="reveal" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+      <div>
+        <h2 style="font-size: clamp(24px,3vw,32px); margin-bottom: 10px;">Read the publications</h2>
+        <p style="font-size: 15px;">Full citations for the WassersteinGrad preprint and EGU 2026 poster.</p>
+      </div>
+      <a href="publications.html" class="btn-pri">Publications →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>© 2026 Younes Essafouri · Toulouse, France</span>
+    <span>Built with contour lines &amp; gradients</span>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
