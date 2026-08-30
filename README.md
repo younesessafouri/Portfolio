@@ -5,7 +5,7 @@ WassersteinGrad: Application to Autoregressive Weather Forecasting"**
 
 Younes Essafouri, Laure Raynaud, Luciano Drozda, Laurent Risser — arXiv:2604.22580
 
-🌐 **https://younesessafouri.github.io/wassersteingrad/**
+🌐 **https://younesessafouri.github.io/WassersteinGrad/**
 
 ---
 
