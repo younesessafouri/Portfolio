@@ -490,5 +490,72 @@ footer.site-footer .container {
   .polaroid { width: 78vw; max-width: 240px; }
 }
 
+/* ---------------------------------------------------------------
+   Selected Publications — thumbnail + citation list
+   --------------------------------------------------------------- */
 
+.pub-item {
+  display: grid;
+  grid-template-columns: 176px minmax(0, 1fr);
+  gap: 26px;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  align-items: start;
+}
+.pub-item:first-child { padding-top: 0; }
+
+.pub-thumb {
+  display: block; border-radius: 7px; overflow: hidden;
+  border: 1px solid var(--rule);
+  background: var(--surface);
+  transition: border-color .22s, transform .22s;
+}
+.pub-thumb:hover { border-color: var(--accent); transform: translateY(-2px); }
+.pub-thumb img { width: 100%; height: auto; display: block; }
+
+.pub-title {
+  font-family: var(--display); font-weight: 500;
+  font-size: 17.5px; line-height: 1.35;
+  margin: 0 0 7px;
+}
+.pub-auth {
+  font-size: 13.5px; line-height: 1.5;
+  color: var(--ink-mute); margin-bottom: 4px;
+}
+.pub-auth b { color: var(--accent-2); font-weight: 600; }
+.pub-where {
+  font-size: 13px; font-style: italic;
+  color: var(--ink-soft); margin-bottom: 12px;
+}
+
+.pub-actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.pub-actions a,
+.pub-actions button {
+  font-family: var(--text); font-size: 13px; font-weight: 500;
+  color: var(--accent); background: none; border: 0; padding: 0;
+  cursor: pointer;
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 45%, transparent);
+  transition: color .18s, border-color .18s;
+}
+.pub-actions a:hover,
+.pub-actions button:hover { color: var(--accent-2); border-bottom-color: var(--accent-2); }
+.pub-actions button[aria-expanded="true"] { color: var(--accent-2); border-bottom-color: var(--accent-2); }
+
+.pub-panel { margin-top: 14px; }
+.pub-panel p {
+  font-size: 14px; line-height: 1.6; color: var(--ink-soft);
+  margin: 0; padding: 14px 16px;
+  border-left: 2px solid var(--rule);
+  background: var(--surface); border-radius: 0 8px 8px 0;
+}
+.pub-panel pre {
+  margin: 0; padding: 14px 16px; overflow-x: auto;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 8px;
+  font-family: var(--mono); font-size: 11.5px; line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 620px) {
+  .pub-item { grid-template-columns: 1fr; gap: 16px; }
+  .pub-thumb { max-width: 260px; }
 }

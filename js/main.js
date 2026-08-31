@@ -167,3 +167,20 @@
     art.style.willChange = "transform";
   }
 })();
+
+/* Expandable Abstract / BibTeX panels in the publications list. */
+(function () {
+  var buttons = document.querySelectorAll("[data-pub-toggle]");
+  if (!buttons.length) return;
+  [].forEach.call(buttons, function (btn) {
+    var panel = document.getElementById(btn.getAttribute("data-pub-toggle"));
+    if (!panel) return;
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-controls", panel.id);
+    btn.addEventListener("click", function () {
+      var open = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!open));
+      panel.hidden = open;
+    });
+  });
+})();
