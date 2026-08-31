@@ -491,32 +491,44 @@ footer.site-footer .container {
 }
 
 /* ---------------------------------------------------------------
-   Selected Publications — thumbnail + citation list
+   Selected Publications — full-width figure + citation
    --------------------------------------------------------------- */
 
-.pub-item {
-  display: grid;
-  grid-template-columns: 176px minmax(0, 1fr);
-  gap: 26px;
-  padding: 26px 0;
+.pub-entry {
+  padding: 40px 0;
   border-bottom: 1px solid var(--rule-soft);
-  align-items: start;
 }
-.pub-item:first-child { padding-top: 0; }
+.pub-entry:first-of-type { padding-top: 0; }
+.pub-entry:last-of-type  { border-bottom: 0; }
 
-.pub-thumb {
-  display: block; border-radius: 7px; overflow: hidden;
+/* --- figure --- */
+.pub-fig { margin: 0 0 24px; }
+.pub-plate {
+  background: #fcfcfa;
   border: 1px solid var(--rule);
-  background: var(--surface);
-  transition: border-color .22s, transform .22s;
+  border-radius: 10px;
+  padding: 12px;
+  transition: border-color .22s;
 }
-.pub-thumb:hover { border-color: var(--accent); transform: translateY(-2px); }
-.pub-thumb img { width: 100%; height: auto; display: block; }
+.pub-entry:hover .pub-plate { border-color: color-mix(in oklab, var(--accent) 45%, var(--rule)); }
+.pub-plate img { width: 100%; height: auto; display: block; border-radius: 4px; }
+.pub-fig figcaption {
+  font-size: 12.5px; line-height: 1.55;
+  color: var(--ink-mute); margin-top: 11px; max-width: 78ch;
+}
 
+/* --- citation --- */
+.pub-kind {
+  display: inline-block;
+  font-family: var(--mono); font-size: 10.5px; font-weight: 500;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-2);
+  margin-bottom: 10px;
+}
 .pub-title {
   font-family: var(--display); font-weight: 500;
-  font-size: 17.5px; line-height: 1.35;
-  margin: 0 0 7px;
+  font-size: 19px; line-height: 1.32;
+  margin: 0 0 9px; max-width: 62ch;
 }
 .pub-auth {
   font-size: 13.5px; line-height: 1.5;
@@ -525,10 +537,10 @@ footer.site-footer .container {
 .pub-auth b { color: var(--accent-2); font-weight: 600; }
 .pub-where {
   font-size: 13px; font-style: italic;
-  color: var(--ink-soft); margin-bottom: 12px;
+  color: var(--ink-soft); margin-bottom: 14px;
 }
 
-.pub-actions { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.pub-actions { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; }
 .pub-actions a,
 .pub-actions button {
   font-family: var(--text); font-size: 13px; font-weight: 500;
@@ -538,13 +550,15 @@ footer.site-footer .container {
   transition: color .18s, border-color .18s;
 }
 .pub-actions a:hover,
-.pub-actions button:hover { color: var(--accent-2); border-bottom-color: var(--accent-2); }
-.pub-actions button[aria-expanded="true"] { color: var(--accent-2); border-bottom-color: var(--accent-2); }
+.pub-actions button:hover,
+.pub-actions button[aria-expanded="true"] {
+  color: var(--accent-2); border-bottom-color: var(--accent-2);
+}
 
-.pub-panel { margin-top: 14px; }
+.pub-panel { margin-top: 16px; }
 .pub-panel p {
-  font-size: 14px; line-height: 1.6; color: var(--ink-soft);
-  margin: 0; padding: 14px 16px;
+  font-size: 14px; line-height: 1.62; color: var(--ink-soft);
+  margin: 0; padding: 14px 16px; max-width: 76ch;
   border-left: 2px solid var(--rule);
   background: var(--surface); border-radius: 0 8px 8px 0;
 }
@@ -555,7 +569,19 @@ footer.site-footer .container {
   color: var(--ink-soft);
 }
 
-@media (max-width: 620px) {
-  .pub-item { grid-template-columns: 1fr; gap: 16px; }
-  .pub-thumb { max-width: 260px; }
+/* --- talks --- */
+.talk-row {
+  display: grid; grid-template-columns: 120px 1fr;
+  gap: 24px; align-items: baseline;
+  padding: 20px 0; border-top: 1px solid var(--rule-soft);
+}
+.talk-row:first-child { border-top: 0; padding-top: 0; }
+.talk-row .talk-when { font-family: var(--mono); font-size: 12.5px; color: var(--accent-2); }
+.talk-row h3 { font-size: 16.5px; margin-bottom: 5px; }
+.talk-row .talk-where { font-size: 13.5px; color: var(--ink-mute); }
+
+@media (max-width: 700px) {
+  .talk-row { grid-template-columns: 1fr; gap: 5px; }
+  .pub-plate { padding: 8px; }
+  .pub-title { font-size: 17px; }
 }
