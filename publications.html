@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230a0d15%22/%3E%3Cpath%20d%3D%22M4%2012c4%200%204%203%208%203s4-3%208-3%204%203%208%203%22%20stroke%3D%22%236fe3c4%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M4%2020c4%200%204%203%208%203s4-3%208-3%204%203%208%203%22%20stroke%3D%22%235aa9ff%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=20260831">
 </head>
 <body id="top">
 
@@ -34,90 +34,96 @@
   </div>
 </nav>
 
-<header style="padding: 150px 0 60px; border-bottom: 1px solid var(--rule-soft);">
-  <div class="container" style="max-width: 820px;">
+<header style="padding: 150px 0 56px; border-bottom: 1px solid var(--rule-soft);">
+  <div class="container" style="max-width: 940px;">
     <div class="eyebrow"><span class="dot"></span> Publications &amp; Talks</div>
     <h1 style="font-size: clamp(36px,5vw,58px); font-weight: 400;">Written &amp; presented.</h1>
   </div>
 </header>
 
 <section>
-  <div class="container" style="max-width: 820px;">
-    <div class="section-head reveal" style="margin-bottom: 28px;">
-      <h2 style="font-size: 26px; margin-bottom: 12px;">Selected Publications</h2>
-      <p style="font-size: 14.5px;">For a complete and up-to-date list of publications, check my
+  <div class="container" style="max-width: 940px;">
+    <div class="section-head reveal" style="margin-bottom: 34px;">
+      <h2 style="font-size: 26px; margin-bottom: 10px;">Selected Publications</h2>
+      <p style="font-size: 14.5px;">For a complete and up-to-date list, see my
         <a href="https://scholar.google.com/citations?user=xJJI31wAAAAJ&amp;hl=fr" target="_blank" rel="noopener">Google Scholar</a>.</p>
     </div>
 
-    <div class="pub-list reveal">
-
-      <article class="pub-item">
-        <a class="pub-thumb" href="https://younesessafouri.github.io/WassersteinGrad/" target="_blank" rel="noopener">
-          <img src="assets/pub/thumb-wassersteingrad.webp" alt="Two attribution maps over France side by side: scattered speckle from SmoothGrad, and a single coherent red region from WassersteinGrad." width="520" height="321" loading="lazy" decoding="async">
-        </a>
-        <div class="pub-meta">
-          <h3 class="pub-title">Explanation of Dynamic Physical Field Predictions using WassersteinGrad: Application to Autoregressive Weather Forecasting</h3>
-          <div class="pub-auth"><b>Younes Essafouri</b>, Laure Raynaud, Luciano Drozda, Laurent Risser</div>
-          <div class="pub-where">arXiv preprint &middot; under review</div>
-          <div class="pub-actions">
-            <a href="https://arxiv.org/abs/2604.22580" target="_blank" rel="noopener">Paper</a>
-            <a href="https://younesessafouri.github.io/WassersteinGrad/" target="_blank" rel="noopener">Project page</a>
-            <button type="button" data-pub-toggle="abs-wg">Abstract</button>
-            <button type="button" data-pub-toggle="bib-wg">BibTeX</button>
-          </div>
-          <div class="pub-panel" id="abs-wg" hidden>
-            <p>Perturbing the input of a neural weather model does not make its gradient explanation noisier — it makes it move. We show that stochastic input perturbations geometrically displace attribution maps on dynamic physical fields, an effect that compounds under autoregressive rollout, and replace SmoothGrad&rsquo;s pointwise averaging with an entropic Wasserstein barycenter that recovers a spatially coherent geometric consensus.</p>
-          </div>
-          <div class="pub-panel" id="bib-wg" hidden>
-            <pre>@article{essafouri2026wassersteingrad,
+    <article class="pub-entry reveal">
+      <figure class="pub-fig">
+        <div class="pub-plate">
+          <img src="assets/pub/fig-preprint-overview.webp" alt="Three panels: (a) a neural forecasting model applied autoregressively to a stack of atmospheric channels; (b) the local explanation pipeline from input wind at 250 hPa to predicted precipitation over a Paris region of interest; (c) optimal-transport flux showing attribution mass sent from true locations and received at nearby ones." width="1600" height="673" loading="lazy" decoding="async">
+        </div>
+        <figcaption>Autoregressive rollout, the attribution pipeline, and the transport flux showing attribution mass migrating under input noise.</figcaption>
+      </figure>
+      <div class="pub-body">
+        <span class="pub-kind">Preprint</span>
+        <h3 class="pub-title">Explanation of Dynamic Physical Field Predictions using WassersteinGrad: Application to Autoregressive Weather Forecasting</h3>
+        <div class="pub-auth"><b>Younes Essafouri</b>, Laure Raynaud, Luciano Drozda, Laurent Risser</div>
+        <div class="pub-where">arXiv:2604.22580 &middot; under review</div>
+        <div class="pub-actions">
+          <a href="https://arxiv.org/abs/2604.22580" target="_blank" rel="noopener">Paper</a>
+          <a href="https://younesessafouri.github.io/WassersteinGrad/" target="_blank" rel="noopener">Project page</a>
+          <button type="button" data-pub-toggle="abs-wg">Abstract</button>
+          <button type="button" data-pub-toggle="bib-wg">BibTeX</button>
+        </div>
+        <div class="pub-panel" id="abs-wg" hidden>
+          <p>Perturbing the input of a neural weather model does not make its gradient explanation noisier &mdash; it makes it move. We show that stochastic input perturbations geometrically displace attribution maps on dynamic physical fields, an effect that compounds under autoregressive rollout, and replace SmoothGrad&rsquo;s pointwise averaging with an entropic Wasserstein barycenter that recovers a spatially coherent geometric consensus.</p>
+        </div>
+        <div class="pub-panel" id="bib-wg" hidden>
+          <pre>@article{essafouri2026wassersteingrad,
   title   = {Explanation of Dynamic Physical Field Predictions using
-             WassersteinGrad: Application to Autoregressive Weather Forecasting},
+             WassersteinGrad: Application to Autoregressive Weather
+             Forecasting},
   author  = {Essafouri, Younes and Raynaud, Laure and
              Drozda, Luciano and Risser, Laurent},
   journal = {arXiv preprint arXiv:2604.22580},
   year    = {2026}
 }</pre>
-          </div>
         </div>
-      </article>
+      </div>
+    </article>
 
-      <article class="pub-item">
-        <a class="pub-thumb" href="https://doi.org/10.5194/egusphere-egu26-4039" target="_blank" rel="noopener">
-          <img src="assets/pub/thumb-egu.webp" alt="Two attribution maps over France with red influence ellipses: a large ellipse for wind at 250 hPa and a much smaller one for 10 metre wind." width="520" height="321" loading="lazy" decoding="async">
-        </a>
-        <div class="pub-meta">
-          <h3 class="pub-title">A Framework for Explainable AI in Weather Forecasting: Diagnosing Deep Learning Models via Gradient-Based Attributions</h3>
-          <div class="pub-auth"><b>Younes Essafouri</b>, Corentin Seznec, Luciano Drozda, Laure Raynaud, Laurent Risser</div>
-          <div class="pub-where">EGU General Assembly 2026, Vienna &middot; EGU26-4039</div>
-          <div class="pub-actions">
-            <a href="https://doi.org/10.5194/egusphere-egu26-4039" target="_blank" rel="noopener">Abstract</a>
-            <a href="https://doi.org/10.5194/egusphere-egu26-4039" target="_blank" rel="noopener">DOI</a>
-          </div>
+    <article class="pub-entry reveal">
+      <figure class="pub-fig">
+        <div class="pub-plate">
+          <img src="assets/pub/fig-egu-ellipses.webp" alt="Four attribution maps over France for zonal wind at 250, 500 and 850 hPa and at 10 metres, each overlaid with a red 95 percent influence ellipse and an attribution barycenter marker. The ellipses shrink steadily as altitude decreases." width="1600" height="406" loading="lazy" decoding="async">
         </div>
-      </article>
+        <figcaption>Each attribution map summarised by its barycenter and 95% influence ellipse: the effective receptive field contracts steadily from upper-level flow down to surface wind.</figcaption>
+      </figure>
+      <div class="pub-body">
+        <span class="pub-kind">Conference &middot; Poster</span>
+        <h3 class="pub-title">A Framework for Explainable AI in Weather Forecasting: Diagnosing Deep Learning Models via Gradient-Based Attributions</h3>
+        <div class="pub-auth"><b>Younes Essafouri</b>, Corentin Seznec, Luciano Drozda, Laure Raynaud, Laurent Risser</div>
+        <div class="pub-where">EGU General Assembly 2026, Vienna &middot; EGU26-4039</div>
+        <div class="pub-actions">
+          <a href="https://doi.org/10.5194/egusphere-egu26-4039" target="_blank" rel="noopener">Abstract</a>
+          <a href="https://doi.org/10.5194/egusphere-egu26-4039" target="_blank" rel="noopener">DOI</a>
+        </div>
+      </div>
+    </article>
 
-    </div>
   </div>
 </section>
 
 <section style="border-bottom: none; padding-bottom: 100px;">
-  <div class="container" style="max-width: 820px;">
-    <div class="section-head reveal">
+  <div class="container" style="max-width: 940px;">
+    <div class="section-head reveal" style="margin-bottom: 26px;">
       <h2 style="font-size: 26px;">Talks &amp; posters</h2>
     </div>
     <div class="reveal">
-      <div class="pub-row">
-        <div class="pub-year">May 2026</div>
+      <div class="talk-row">
+        <div class="talk-when">May 2026</div>
         <div>
-          <h3 style="font-size: 16.5px;">A Framework for Explainable AI in Weather Forecasting</h3>
-          <div class="pub-venue">Poster &mdash; EGU General Assembly, Vienna</div>
+          <h3>A Framework for Explainable AI in Weather Forecasting</h3>
+          <div class="talk-where">Poster &mdash; EGU General Assembly, Vienna</div>
         </div>
       </div>
-      <div class="pub-row">
-        <div class="pub-year">2026</div>
+      <div class="talk-row">
+        <div class="talk-when">2026</div>
         <div>
-          <h3 style="font-size: 16.5px;">Explainable AI for Data-Driven Weather Forecasting</h3>
-          <div class="pub-venue">S&eacute;minaire doctoral, &eacute;quipe Stat&amp;Opt &mdash; Institut de Math&eacute;matiques de Toulouse</div>
+          <h3>Explainable AI for Data-Driven Weather Forecasting</h3>
+          <div class="talk-where">S&eacute;minaire doctoral, &eacute;quipe Stat&amp;Opt &mdash; Institut de Math&eacute;matiques de Toulouse</div>
         </div>
       </div>
     </div>
@@ -131,6 +137,6 @@
   </div>
 </footer>
 
-<script src="js/main.js"></script>
+<script src="js/main.js?v=20260831"></script>
 </body>
 </html>
