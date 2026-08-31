@@ -95,3 +95,75 @@
     });
   });
 })();
+
+/* ------------------------------------------------------------------
+   Isometric parallax — hero atmosphere stack + the cityscape mark.
+   Pointer moves the levels by depth; scroll drifts the whole stack.
+   Purely decorative: skipped entirely under reduced-motion.
+   ------------------------------------------------------------------ */
+(function () {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (window.matchMedia("(hover: none)").matches) return;
+
+  var field = document.querySelector("[data-iso]");
+  if (!field) return;
+
+  var levels = [].slice.call(field.querySelectorAll(".iso-level"));
+  if (!levels.length) return;
+
+  var px = 0, py = 0;   // pointer, normalised -1..1
+  var sy = 0;           // scroll drift
+  var queued = false;
+
+  function paint() {
+    queued = false;
+    levels.forEach(function (g) {
+      var d = parseFloat(g.getAttribute("data-depth")) || 1;
+      var tx = px * 26 * d;
+      var ty = py * 14 * d + sy * 18 * d;
+      g.style.transform = "translate(" + tx.toFixed(2) + "px," + ty.toFixed(2) + "px)";
+    });
+  }
+
+  function request() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(paint);
+  }
+
+  window.addEventListener("pointermove", function (e) {
+    var r = field.getBoundingClientRect();
+    if (!r.height) return;
+    px = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+    py = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+    px = Math.max(-1, Math.min(1, px));
+    py = Math.max(-1, Math.min(1, py));
+    request();
+  }, { passive: true });
+
+  window.addEventListener("scroll", function () {
+    var r = field.getBoundingClientRect();
+    sy = Math.max(-1, Math.min(1, -r.top / Math.max(1, r.height)));
+    request();
+  }, { passive: true });
+
+  /* The cityscape mark in "Beyond the Lab" gets a gentler version. */
+  var art = document.querySelector(".iso-art");
+  if (art) {
+    var artQueued = false;
+    window.addEventListener("pointermove", function (e) {
+      if (artQueued) return;
+      artQueued = true;
+      requestAnimationFrame(function () {
+        artQueued = false;
+        var r = art.getBoundingClientRect();
+        if (!r.height || r.bottom < 0 || r.top > window.innerHeight) return;
+        var ax = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (r.width)));
+        var ay = Math.max(-1, Math.min(1, (e.clientY - (r.top + r.height / 2)) / (r.height)));
+        art.style.transform = "translate(" + (ax * 9).toFixed(2) + "px," + (ay * 6).toFixed(2) + "px)";
+      });
+    }, { passive: true });
+    art.style.transition = "transform .6s cubic-bezier(.22,.9,.3,1)";
+    art.style.willChange = "transform";
+  }
+})();
