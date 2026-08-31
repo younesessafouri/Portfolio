@@ -307,20 +307,6 @@ section:last-of-type { border-bottom: none; }
 .tag-accent { color: var(--accent-2); border-color: color-mix(in oklab, var(--accent-2) 40%, var(--rule)); }
 .tag-vintage { color: var(--vintage); border-color: color-mix(in oklab, var(--vintage) 40%, var(--rule)); }
 
-/* Highlight / achievement cards */
-.highlight-card {
-  position: relative; overflow: hidden;
-  background: linear-gradient(160deg, var(--surface) 0%, var(--surface-2) 100%);
-}
-.highlight-card .tag-row { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
-.highlight-card h3 { font-size: 22px; margin-bottom: 12px; }
-.highlight-card p { font-size: 14.5px; margin-bottom: 18px; }
-.highlight-card .card-foot {
-  display: flex; align-items: center; justify-content: space-between;
-  font-family: var(--mono); font-size: 11.5px; color: var(--ink-mute);
-  padding-top: 18px; border-top: 1px solid var(--rule-soft);
-}
-
 /* ---------------- Project rows ---------------- */
 
 .project-row {
@@ -491,56 +477,60 @@ footer.site-footer .container {
 }
 
 /* ---------------------------------------------------------------
-   Selected Publications — full-width figure + citation
+   Selected Publications — small figure left of the citation
    --------------------------------------------------------------- */
 
 .pub-entry {
-  padding: 40px 0;
-  border-bottom: 1px solid var(--rule-soft);
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 26px;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
 }
 .pub-entry:first-of-type { padding-top: 0; }
 .pub-entry:last-of-type  { border-bottom: 0; }
 
-/* --- figure --- */
-.pub-fig { margin: 0 0 24px; }
-.pub-plate {
+/* Uniform thumbnail box: figures keep their own aspect inside it, so
+   entries line up however wide or tall the source figure is. */
+.pub-fig { margin: 0; }
+.pub-thumb {
+  display: block;
+  width: 100%; aspect-ratio: 5 / 3;
   background: #fcfcfa;
   border: 1px solid var(--rule);
-  border-radius: 10px;
-  padding: 12px;
-  transition: border-color .22s;
+  border-radius: 7px;
+  padding: 7px;
+  transition: border-color .22s, transform .22s;
 }
-.pub-entry:hover .pub-plate { border-color: color-mix(in oklab, var(--accent) 45%, var(--rule)); }
-.pub-plate img { width: 100%; height: auto; display: block; border-radius: 4px; }
-.pub-fig figcaption {
-  font-size: 12.5px; line-height: 1.55;
-  color: var(--ink-mute); margin-top: 11px; max-width: 78ch;
+.pub-thumb:hover { border-color: var(--accent); transform: translateY(-2px); }
+.pub-thumb img {
+  width: 100%; height: 100%;
+  object-fit: contain; display: block;
 }
 
-/* --- citation --- */
 .pub-kind {
-  display: inline-block;
+  display: block;
   font-family: var(--mono); font-size: 10.5px; font-weight: 500;
   letter-spacing: .12em; text-transform: uppercase;
-  color: var(--accent-2);
-  margin-bottom: 10px;
+  color: var(--accent-2); margin-bottom: 8px;
 }
 .pub-title {
   font-family: var(--display); font-weight: 500;
-  font-size: 19px; line-height: 1.32;
-  margin: 0 0 9px; max-width: 62ch;
+  font-size: 17.5px; line-height: 1.34;
+  margin: 0 0 8px;
 }
 .pub-auth {
   font-size: 13.5px; line-height: 1.5;
-  color: var(--ink-mute); margin-bottom: 4px;
+  color: var(--ink-mute); margin-bottom: 3px;
 }
 .pub-auth b { color: var(--accent-2); font-weight: 600; }
 .pub-where {
   font-size: 13px; font-style: italic;
-  color: var(--ink-soft); margin-bottom: 14px;
+  color: var(--ink-soft); margin-bottom: 13px;
 }
 
-.pub-actions { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; }
+.pub-actions { display: flex; flex-wrap: wrap; gap: 17px; align-items: center; }
 .pub-actions a,
 .pub-actions button {
   font-family: var(--text); font-size: 13px; font-weight: 500;
@@ -555,18 +545,22 @@ footer.site-footer .container {
   color: var(--accent-2); border-bottom-color: var(--accent-2);
 }
 
-.pub-panel { margin-top: 16px; }
+.pub-panel { margin-top: 15px; }
 .pub-panel p {
-  font-size: 14px; line-height: 1.62; color: var(--ink-soft);
-  margin: 0; padding: 14px 16px; max-width: 76ch;
+  font-size: 13.5px; line-height: 1.62; color: var(--ink-soft);
+  margin: 0; padding: 13px 15px;
   border-left: 2px solid var(--rule);
   background: var(--surface); border-radius: 0 8px 8px 0;
 }
 .pub-panel pre {
-  margin: 0; padding: 14px 16px; overflow-x: auto;
+  margin: 0; padding: 13px 15px; overflow-x: auto;
   background: var(--surface); border: 1px solid var(--rule); border-radius: 8px;
-  font-family: var(--mono); font-size: 11.5px; line-height: 1.65;
+  font-family: var(--mono); font-size: 11px; line-height: 1.65;
   color: var(--ink-soft);
+}
+
+.pub-more {
+  margin-top: 30px; font-size: 13.5px;
 }
 
 /* --- talks --- */
@@ -581,7 +575,7 @@ footer.site-footer .container {
 .talk-row .talk-where { font-size: 13.5px; color: var(--ink-mute); }
 
 @media (max-width: 700px) {
+  .pub-entry { grid-template-columns: 1fr; gap: 16px; }
+  .pub-thumb { max-width: 260px; }
   .talk-row { grid-template-columns: 1fr; gap: 5px; }
-  .pub-plate { padding: 8px; }
-  .pub-title { font-size: 17px; }
 }
