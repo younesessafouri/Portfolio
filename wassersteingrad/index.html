@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WassersteinGrad — Explaining Dynamic Physical Field Predictions</title>
+
+<meta name="description" content="Input noise does not blur gradient attributions on weather fields — it moves them. WassersteinGrad replaces SmoothGrad's pointwise average with an entropic Wasserstein barycenter to recover a geometric consensus of displaced explanations.">
+<meta name="author" content="Younes Essafouri, Laure Raynaud, Luciano Drozda, Laurent Risser">
+<meta name="keywords" content="explainable AI, XAI, weather forecasting, optimal transport, Wasserstein barycenter, SmoothGrad, attribution, autoregressive forecasting, AROME, TITAN">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="WassersteinGrad — Explaining Dynamic Physical Field Predictions">
+<meta property="og:description" content="Gradient explanations of weather models don't get noisier under perturbation — they get displaced. WassersteinGrad averages them geometrically instead of pointwise.">
+<meta property="og:image" content="assets/figures/map-wgbary-t1.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WassersteinGrad — Explaining Dynamic Physical Field Predictions">
+<meta name="twitter:description" content="Gradient explanations of weather models don't get noisier under perturbation — they get displaced.">
+<meta name="twitter:image" content="assets/figures/map-wgbary-t1.webp">
+
+<link rel="canonical" href="https://younesessafouri.github.io/Portfolio/wassersteingrad/">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;650;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23ffffff'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23a4232b' stroke-width='4'/%3E%3C/svg%3E">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  "name": "Explanation of Dynamic Physical Field Predictions using WassersteinGrad: Application to Autoregressive Weather Forecasting",
+  "author": [
+    {"@type": "Person", "name": "Younes Essafouri"},
+    {"@type": "Person", "name": "Laure Raynaud"},
+    {"@type": "Person", "name": "Luciano Drozda"},
+    {"@type": "Person", "name": "Laurent Risser"}
+  ],
+  "identifier": "arXiv:2604.22580",
+  "datePublished": "2026-04-24",
+  "creativeWorkStatus": "Preprint. Under review.",
+  "abstract": "Stochastic input perturbations do not induce stationary amplitude noise in attribution maps of dynamic physical fields, but cause a geometric displacement of the attributions. WassersteinGrad extracts a geometric consensus of perturbed attribution maps by computing their entropic Wasserstein barycenter."
+}
+</script>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a class="nav-brand" href="#top">Wasserstein<span>Grad</span></a>
+    <div class="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#failure">Failure mode</a>
+      <a href="#idea">Idea</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#meaning">Interpretation</a>
+      <a href="#cite">Cite</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- ====================================================== HERO ============ -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="venue">Preprint · Under review · arXiv:2604.22580</p>
+
+    <h1>Explanation of Dynamic Physical Field Predictions using <span class="wg">WassersteinGrad</span></h1>
+    <p class="hero-sub">Application to autoregressive weather forecasting.</p>
+
+    <ul class="authors">
+      <li>Younes Essafouri<sup>1</sup></li>
+      <li>Laure Raynaud<sup>2</sup></li>
+      <li>Luciano Drozda<sup>3</sup></li>
+      <li>Laurent Risser<sup>1</sup></li>
+    </ul>
+    <ul class="affils">
+      <li><sup>1</sup>Univ. Toulouse, INSA Toulouse, CNRS UMR 5219, IMT, Toulouse, France</li>
+      <li><sup>2</sup>Météo-France, CNRS, Univ. Toulouse, CNRM, Toulouse, France</li>
+      <li><sup>3</sup>Cerfacs, CNRS/Cerfacs/IRD, CECI, Toulouse, France</li>
+    </ul>
+
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://arxiv.org/abs/2604.22580">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
+        Paper (PDF)
+      </a>
+      <a class="btn" href="https://arxiv.org/abs/2604.22580">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        arXiv
+      </a>
+      <a class="btn" href="https://github.com/meteofrance/py4cast">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.8 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.5 4.7 18.5 5 18.5 5c.6 1.6.2 2.8.1 3.1.8.9 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.8-5.8 7.8-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+        py4cast
+      </a>
+      <a class="btn" href="https://huggingface.co/datasets/meteofrance/titan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+        TITAN dataset
+      </a>
+      <a class="btn" href="#cite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7H6a2 2 0 0 0-2 2v3c0 3-1 4-1 4h5s-1-1-1-4V7zM19 7h-3a2 2 0 0 0-2 2v3c0 3-1 4-1 4h5s-1-1-1-4V7z"/></svg>
+        BibTeX
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ==================================================== TEASER ============ -->
+<section class="teaser" aria-labelledby="teaser-h">
+  <div class="wrap">
+    <div class="teaser-frame" data-reveal>
+      <div class="teaser-bar">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="teaser-h">Which upstream winds drove the rain over Paris?</span>
+        <span class="spacer"></span>
+        <div class="seg" role="group" aria-label="Forecast lead time">
+          <button type="button" data-lead="t1" aria-pressed="true">t + 1<span class="seg-long">&nbsp;·&nbsp; one step</span></button>
+          <button type="button" data-lead="t5" aria-pressed="false">t + 5<span class="seg-long">&nbsp;·&nbsp; autoregressive</span></button>
+        </div>
+      </div>
+
+      <div class="map-grid" id="teaser-grid">
+        <figure class="map-cell">
+          <h4>BaseGrad</h4>
+          <p class="verdict">Scattered, high-frequency noise.</p>
+          <img src="assets/figures/map-basegrad-t1.webp" alt="BaseGrad attribution map over France: sparse, speckled red and blue pixels with no coherent structure." width="660" height="526" data-map="basegrad" loading="eager" decoding="async">
+        </figure>
+        <figure class="map-cell">
+          <h4>SmoothGrad</h4>
+          <p class="verdict">Less variance, still spatially fragmented.</p>
+          <img src="assets/figures/map-smoothgrad-t1.webp" alt="SmoothGrad attribution map over France: reduced speckle but still fragmented into disconnected patches." width="660" height="526" data-map="smoothgrad" loading="eager" decoding="async">
+        </figure>
+        <figure class="map-cell is-ours">
+          <h4>WG<sub>Bary</sub> <span class="ours-tag">Ours</span></h4>
+          <p class="verdict">One coherent region of influence.</p>
+          <img src="assets/figures/map-wgbary-t1.webp" alt="WassersteinGrad barycenter attribution map: a single smooth, geographically coherent region of influence over northern France." width="660" height="526" data-map="wgbary" loading="eager" decoding="async">
+        </figure>
+        <figure class="map-cell is-ours">
+          <h4>WG<sub>Bary×Grad</sub> <span class="ours-tag">Ours</span></h4>
+          <p class="verdict">Sparse and sign-aware.</p>
+          <img src="assets/figures/map-wgbarygrad-t1.webp" alt="WassersteinGrad barycenter used as a mask on the base gradient: a spatially concentrated, signed attribution map." width="660" height="526" data-map="wgbarygrad" loading="eager" decoding="async">
+        </figure>
+      </div>
+
+      <div class="teaser-foot">
+        <span class="scale">
+          <span>−1</span><span class="scale-bar" aria-hidden="true"></span><span>+1</span>
+        </span>
+        <span>Normalised attribution of surface precipitation over the Paris ROI (black box) with respect to zonal wind at 250&nbsp;hPa.</span>
+      </div>
+    </div>
+    <p class="caption" style="margin-top:1rem"><span class="fig-label">Figure 2</span>Four ways of explaining the same forecast, on the same atmospheric event. Only the transport-based aggregation produces a map a meteorologist can read as a region.</p>
+  </div>
+</section>
+
+<!-- ====================================================== TL;DR =========== -->
+<section class="tldr band">
+  <div class="wrap">
+    <div class="tldr-inner" data-reveal>
+      <p>Perturbing the input of a weather model doesn't make its explanation <span class="hi">noisier</span> — it makes it <span class="hi">move</span>. So we stop averaging explanations pointwise and start averaging them <span class="hi-2">geometrically</span>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================================================== PROBLEM =========== -->
+<section id="problem">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">01 — The problem</p>
+      <h2>Neural forecasts are replacing physical solvers. Nobody can read them.</h2>
+      <p class="lede">Data-driven models now match or beat numerical weather prediction at a fraction of the inference cost. But when one predicts heavy rain over Paris tomorrow, a forecaster has no way to ask what in today's atmospheric state made it say that.</p>
+    </div>
+
+    <div class="cards cards-3" data-reveal>
+      <div class="card">
+        <span class="card-num">Why it matters</span>
+        <h4>No explanation, no operational trust</h4>
+        <p>Extreme-weather warnings are life-safety decisions. A model that is right for the wrong reasons is a liability, and without attribution you cannot tell the two apart.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Why it's hard</span>
+        <h4>XAI was built for photographs</h4>
+        <p>Gradient attribution methods assume a static image on a pixel grid. The atmosphere is a continuous, advective, physically constrained field — the assumptions do not transfer for free.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Why it compounds</span>
+        <h4>Forecasting is autoregressive</h4>
+        <p>Modern models predict <span class="math">t</span>+1 from <span class="math">t</span>, then feed the prediction back in. Gradients backpropagate through every one of those <span class="math">T</span> compositions, and whatever distortion each step adds accumulates.</p>
+      </div>
+    </div>
+
+    <figure class="fig" data-reveal>
+      <img src="assets/figures/rollout.webp" alt="Diagram of autoregressive prediction: a stack of 21 atmospheric channels at time t is passed through the forecasting model f repeatedly, producing states at t+1 through t+T." width="1500" height="501" loading="lazy" decoding="async">
+      <figcaption><span class="fig-label">Figure 1a</span>Autoregressive use of a neural forecasting model <span class="math">f</span>, producing a sequence of physical fields — here regional atmospheric states with <span class="math">C</span> = 21 channels — at successive lead times.</figcaption>
+    </figure>
+
+    <div class="section-head" data-reveal style="margin-top:clamp(3rem,6vw,4.5rem)">
+      <h3>What we actually compute</h3>
+      <p>Every attribution on this page is one number's sensitivity to one field: pick an input channel, pick an output channel, reduce the forecast over a region to a scalar, differentiate.</p>
+    </div>
+
+    <figure class="fig" data-reveal>
+      <img src="assets/figures/attribution-pipeline.webp" alt="Local prediction explanation pipeline: input zonal wind at 250 hPa at time t, predicted surface precipitation at t+5 with a region of interest box over Paris, and the resulting gradient attribution map." width="1500" height="545" loading="lazy" decoding="async">
+      <figcaption><span class="fig-label">Figure 1b</span>Left to right: input zonal wind at 250&nbsp;hPa at time <span class="math">t</span>; predicted surface precipitation at <span class="math">t</span>+5; the explanation of rain over the Paris ROI. The scalar target is the spatial mean over the box <span class="math">ℬ</span>, and the attribution is <span class="math">G</span> = ∇<sub>x<sub>in</sub></sub> 𝒴<sub>target</sub>.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- =============================================== FAILURE MODE =========== -->
+<section id="failure" class="band">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">02 — The failure mode</p>
+      <h2>Displacement, not noise.</h2>
+      <p class="lede">A deep network is locally very rough, so a single gradient says more about that roughness than about the structure we want to see. Smoothing methods fix this by sampling a neighbourhood and averaging — and that averaging step is where things go wrong on physical fields.</p>
+    </div>
+
+    <figure class="fig fig-plain" data-reveal>
+      <img src="assets/figures/shattered-gradients.webp" alt="Three panels. Left: a smooth signal with high-frequency roughness. Middle: its gradient, where the roughness dominates and a single evaluation is essentially arbitrary. Right: averaging over a neighbourhood of N samples recovers the true underlying trend." width="2000" height="423" loading="lazy" decoding="async">
+      <figcaption><span class="fig-label">The shattered gradient problem</span>A single gradient evaluation (middle, red point) is essentially arbitrary. SmoothGrad's fix is to sample <span class="math">N</span> noisy neighbours and average: <span class="math">A</span><sub>SG</sub>(<span class="math">x</span>) = (1/<span class="math">N</span>) Σ ∇<span class="math">f</span>(<span class="math">x</span> + <span class="math">ε<sub>i</sub></span>). On 1-D signals this recovers the trend. The question is what it recovers on a 2-D advective field.</figcaption>
+    </figure>
+
+    <div class="section-head" data-reveal style="margin-top:clamp(2.5rem,5vw,4rem)">
+      <h3>The averaging step assumes something false</h3>
+      <p>SmoothGrad averages the <span class="math">N</span> maps <em>pointwise</em>. That step assumes the maps are noisy estimates of one attribution. On atmospheric fields, they are not.</p>
+    </div>
+
+    <div class="contrast" data-reveal>
+      <div class="assume">
+        <span class="tag">The assumption</span>
+        <h4>Noise perturbs amplitude</h4>
+        <p>Each perturbed map is the true attribution plus independent, spatially stationary noise. Averaging cancels it. This is why SmoothGrad works on natural images.</p>
+      </div>
+      <div class="reality">
+        <span class="tag">What actually happens</span>
+        <h4>Noise perturbs position</h4>
+        <p>The maps are geometrically <em class="term">displaced copies</em> of each other. Averaging spatially misaligned features does not denoise them — it blurs them, and smears mass across locations where nothing happened.</p>
+      </div>
+    </div>
+
+    <div class="section-head" data-reveal style="margin-top:clamp(2.5rem,5vw,4rem)">
+      <h3>The evidence: mass migrates</h3>
+      <p>Treat the clean and perturbed attribution maps as probability measures and solve for the optimal transport plan between them. Masking the diagonal isolates only the mass that physically moved to a new coordinate.</p>
+    </div>
+
+    <div class="triptych" data-reveal>
+      <div class="trip-step">
+        <span class="n">01</span>
+        <img src="assets/figures/noise-baseline-grad.webp" alt="Baseline gradient attribution map over northern France, showing speckled red and blue values concentrated near the Paris region of interest." width="888" height="373" loading="lazy" decoding="async">
+        <h4>Clean gradient</h4>
+        <p>The attribution on the unperturbed input.</p>
+      </div>
+      <div class="trip-step">
+        <span class="n">02</span>
+        <img src="assets/figures/noise-perturbed-grad.webp" alt="Perturbed gradient attribution map, visibly similar in structure but shifted relative to the clean map." width="888" height="384" loading="lazy" decoding="async">
+        <h4>Perturbed gradient</h4>
+        <p>Same event, one noisy input draw. Prediction error changes by about 1%.</p>
+      </div>
+      <div class="trip-step">
+        <span class="n">03</span>
+        <img src="assets/figures/noise-transport-flux.webp" alt="Optimal transport mass flux map showing a structured dipole: green regions where attribution mass was sent and red regions where it was received, separated by roughly 200 kilometres." width="888" height="392" loading="lazy" decoding="async">
+        <h4>Transport flux</h4>
+        <p>Mass excavated from true locations, deposited nearby — a structured dipole, not random amplitude noise.</p>
+        <div class="legend-row">
+          <span><i style="background:#e8756b"></i>Received mass</span>
+          <span><i style="background:#4f8b52"></i>Sent mass</span>
+        </div>
+      </div>
+    </div>
+    <p class="caption"><span class="fig-label">Figure 1c</span>The dashed reference scale is 200&nbsp;km. If the perturbation were stationary amplitude noise, this panel would be structureless.</p>
+
+    <div class="section-head" data-reveal style="margin-top:clamp(3rem,6vw,4.5rem)">
+      <h3>The dissociation: the forecast is fine, the explanation is not</h3>
+      <p>Track the spatial centroid of the attribution map against the model's own relative prediction error, sweeping the noise level. If the instability belonged to the forecasting model, the two curves would rise together. They dissociate sharply.</p>
+    </div>
+
+    <div class="stats" data-reveal>
+      <div class="stat is-red">
+        <span class="n">10–15 <span style="font-size:.42em;font-weight:500">km</span></span>
+        <p class="k">Average <b>centroid advection</b> of the attribution map below <span class="math">σ</span> = 0.4 — while model performance degrades by less than 1%.</p>
+      </div>
+      <div class="stat is-red">
+        <span class="n">~115 <span style="font-size:.42em;font-weight:500">km</span></span>
+        <p class="k"><b>Peak displacement</b> at <span class="math">t</span>+5. Each autoregressive step adds its own geometric distortion, and they compound.</p>
+      </div>
+      <div class="stat">
+        <span class="n">&lt; 1.5<span style="font-size:.45em;font-weight:500">%</span></span>
+        <p class="k">Relative <b>prediction error</b> across the whole noise sweep, at both lead times. The model is stable; its explanation is not.</p>
+      </div>
+    </div>
+
+    <figure class="fig" data-reveal>
+      <img src="assets/figures/displacement-t1.webp" alt="Two plots at lead time t+1. Left: peak displacement in kilometres rising from about 24 to 32 km as noise level increases. Right: centroid displacement rising from about 5 to 12.5 km while relative prediction error stays within 2.5%." width="1800" height="529" loading="lazy" decoding="async">
+      <figcaption><span class="fig-label">Figure 4 · t+1</span><b>One-step lead time.</b> Left: peak displacement, the location of arg&nbsp;max&nbsp;|<span class="math">G</span>|. Right: centroid displacement against relative prediction error on the secondary axis. Error bands are ±1 SEM across <span class="math">n</span> = 100 precipitation-filtered events.</figcaption>
+    </figure>
+
+    <figure class="fig" data-reveal>
+      <img src="assets/figures/displacement-t5.webp" alt="The same two plots at lead time t+5. Peak displacement now rises from about 70 to 115 km, three to four times larger than at t+1, while relative prediction error stays within 1.5%." width="1800" height="514" loading="lazy" decoding="async">
+      <figcaption><span class="fig-label">Figure 4 · t+5</span><b>Autoregressive lead time.</b> Peak displacement amplifies by 3–4× relative to <span class="math">t</span>+1 while the prediction error stays flat. Geometric distortion accumulates across the rollout.</figcaption>
+    </figure>
+
+    <blockquote class="pull" data-reveal>
+      <p>This is phase error: the right thing in the wrong place — a failure mode meteorological verification has known for decades.</p>
+      <cite>Hoffman et al. 1995 · Keil &amp; Craig 2007 · Ebert 2008</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ================================================== MECHANISM =========== -->
+<section id="mechanism" class="band-ink">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">03 — Why it happens</p>
+      <h2>The architecture makes displacement the expected outcome.</h2>
+      <p class="lede">This is not incidental to weather data. Two components that appear in essentially every modern forecasting backbone convert additive input noise into spatial deformation of the backpropagated gradient.</p>
+    </div>
+
+    <div class="cards cards-2" data-reveal>
+      <div class="card">
+        <span class="card-num">CNNs · convolution + pooling</span>
+        <h4>Max pooling routes gradients to the argmax</h4>
+        <p>Pooling sends gradient strictly to the argmax coordinate within each local window. If a noise spike in a background region exceeds the true signal, the argmax operator shifts — and the backpropagated gradient is <strong>physically relocated</strong> to the noise spike's coordinate.</p>
+        <p>Separately, under Gaussian noise of standard deviation <span class="math">s</span>, the expected ReLU output is <span class="math">z</span>&nbsp;Φ(<span class="math">z</span>/<span class="math">s</span>) + <span class="math">s</span>&nbsp;φ(<span class="math">z</span>/<span class="math">s</span>) — and that second term is strictly positive even when <span class="math">z</span> &lt; 0. Neurons that should be inactive fire anyway. These <strong>phantom activations</strong> unblock gradient paths through regions irrelevant to the original feature geometry.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Transformers · self-attention</span>
+        <h4>Attention routing is metastable</h4>
+        <p>The forward-pass attention matrix <span class="math">A</span> appears as a direct multiplicative factor in the backward pass, so the spatial structure of the attribution is anchored to the token routing <span class="math">A</span> induces. Any perturbation that alters <span class="math">A</span> alters the map.</p>
+        <p>Modelling tokens as an interacting particle system, self-attention is <strong>non-Lipschitz</strong> and its interaction energy admits multiple local maxima. Different noise draws can therefore drive the system into <strong>distinct basins of attraction</strong> — qualitatively different clusterings, not perturbed versions of one.</p>
+      </div>
+    </div>
+
+    <p class="caption" style="color:#7f8b9b;max-width:70ch" data-reveal>Consequence: the <span class="math">N</span> maps <span class="math">{G<sub>i</sub>}</span> that SmoothGrad averages are not noisy estimates of a fixed attribution. They are geometrically displaced versions of it — and pointwise averaging is the wrong operation on that set.</p>
+  </div>
+</section>
+
+<!-- ====================================================== IDEA ============ -->
+<section id="idea">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">04 — The key idea</p>
+      <h2>Average where the mass is, not what each pixel says.</h2>
+      <p class="lede">The pointwise average of two shifted bumps is two bumps. Their Wasserstein barycenter is one bump, in the consensus location. That single sentence is the method.</p>
+    </div>
+
+    <div class="bary" data-reveal>
+      <div>
+        <p class="bary-cap"><span class="math">N</span> perturbed measures μ<sub>i</sub></p>
+        <div class="bary-inputs">
+          <img src="assets/figures/barycenter-input-1.webp" alt="" width="256" height="256" loading="lazy" decoding="async">
+          <img src="assets/figures/barycenter-input-2.webp" alt="" width="256" height="256" loading="lazy" decoding="async">
+          <img src="assets/figures/barycenter-input-3.webp" alt="" width="256" height="256" loading="lazy" decoding="async">
+          <img src="assets/figures/barycenter-input-4.webp" alt="" width="256" height="256" loading="lazy" decoding="async">
+          <img src="assets/figures/barycenter-input-5.webp" alt="" width="256" height="256" loading="lazy" decoding="async">
+          <img src="assets/figures/barycenter-input-6.webp" alt="" width="256" height="256" loading="lazy" decoding="async">
+          <img src="assets/figures/barycenter-input-7.webp" alt="" width="256" height="256" loading="lazy" decoding="async">
+          <img src="assets/figures/barycenter-input-8.webp" alt="Eight ring-shaped probability measures, each shifted and deformed slightly relative to the others." width="256" height="256" loading="lazy" decoding="async">
+        </div>
+      </div>
+
+      <div class="bary-arrow" aria-hidden="true">
+        <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h22"/><path d="M20 10l7 7-7 7"/></svg>
+      </div>
+
+      <div class="bary-outs">
+        <figure class="bary-out bad">
+          <img src="assets/figures/barycenter-pointwise-mean.webp" alt="Pointwise mean of the eight rings: a smeared, broken annulus with a washed-out interior." width="512" height="512" loading="lazy" decoding="async">
+          <span class="t">Pointwise mean</span>
+          <p class="d">Structure destroyed. The ring is smeared into a blur that matches none of the inputs.</p>
+        </figure>
+        <figure class="bary-out good">
+          <img src="assets/figures/barycenter-wasserstein.webp" alt="Wasserstein barycenter of the same eight rings: a single sharp, well-defined annulus." width="512" height="512" loading="lazy" decoding="async">
+          <span class="t">Wasserstein barycenter</span>
+          <p class="d">Structure preserved. One sharp ring — the geometric consensus of the inputs.</p>
+        </figure>
+      </div>
+    </div>
+    <p class="caption">Both panels aggregate the <em>same</em> eight measures. The only thing that changes is whether the average is taken in pixel space or in Wasserstein space.</p>
+
+    <div class="callout" data-reveal>
+      <span class="who">The move</span>
+      <p>Map each attribution map to a spatial probability measure <span class="math">μ<sub>i</sub></span> ∝ |<span class="math">G<sub>i</sub></span>| — absolute value, then <span class="math">ℓ</span><sub>1</sub> normalisation, which preserves the magnitude of both positive and negative evidence while satisfying the positivity and mass-conservation constraints of optimal transport. Then replace the pointwise mean with the <strong>Fréchet mean in Wasserstein space</strong>: <span class="math">μ*</span> = arg&nbsp;min<sub>μ</sub> Σ<sub>i</sub> <span class="math">W</span><sub>2</sub><sup>2</sup>(μ, μ<sub>i</sub>).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================================================== METHOD ============ -->
+<section id="method" class="band">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">05 — The method</p>
+      <h2>WassersteinGrad</h2>
+      <p class="lede">A drop-in replacement for SmoothGrad's aggregation step. Everything up to the averaging is unchanged; only the last line differs.</p>
+    </div>
+
+    <div class="setup-grid">
+      <div data-reveal>
+        <ol class="steps">
+          <li>
+            <h4>Perturb one channel</h4>
+            <p>Draw <span class="math">x̃<sub>in,i</sub></span> = <span class="math">x<sub>in</sub></span> + <span class="math">ε<sub>i</sub></span> with <span class="math">ε<sub>i</sub></span> ~ 𝒩(0, <span class="math">σ</span><sup>2</sup><b>I</b>). Only the selected input channel <span class="math">c<sub>in</sub></span> is replaced; the other 20 channels stay clean.</p>
+          </li>
+          <li>
+            <h4>Roll out and reduce</h4>
+            <p>Run the model autoregressively for <span class="math">T</span> steps, take the output channel <span class="math">c<sub>out</sub></span>, and reduce it over the region of interest with a differentiable operator <span class="math">φ</span> — here the spatial mean over the box.</p>
+          </li>
+          <li>
+            <h4>Differentiate</h4>
+            <p>Backpropagate through all <span class="math">T</span> compositions to get the raw gradient <span class="math">G<sub>i</sub></span> = ∇<sub>x̃<sub>in,i</sub></sub> 𝒴<sub>target,i</sub>.</p>
+          </li>
+          <li>
+            <h4>Convert to a measure</h4>
+            <p>Normalise <span class="math">μ<sub>i</sub></span> = |<span class="math">G<sub>i</sub></span>| / Σ|<span class="math">G<sub>i</sub></span>| so the map becomes a spatial probability density that optimal transport can act on.</p>
+          </li>
+          <li>
+            <h4>Take the barycenter</h4>
+            <p>Compute the <strong>entropic</strong> Wasserstein barycenter <span class="math">μ*<sub>λ</sub></span> with Sinkhorn regularisation <span class="math">λ</span> = 0.001. Exact barycenters are prohibitive on a 512 × 640 grid; the entropic form is solved efficiently with the convolutional Sinkhorn algorithm.</p>
+          </li>
+        </ol>
+      </div>
+
+      <div data-reveal>
+        <div class="callout is-red" style="margin-top:0">
+          <span class="who">Cost</span>
+          <p><strong>1.96×</strong> the wall-time of SmoothGrad at <span class="math">λ</span> = 0.001 (14.6&nbsp;s vs 7.4&nbsp;s per sample), on a single 16&nbsp;GB laptop GPU. At <span class="math">λ</span> = 0.01 the overhead falls to 1.13×.</p>
+        </div>
+
+        <h3 style="margin-top:2.2rem">Two variants</h3>
+        <div class="variant-grid">
+          <div class="variant">
+            <span class="name">WG<sub>Bary</sub></span>
+            <span class="formula">G<sub>W</sub> = μ*<sub>λ</sub></span>
+            <p>The barycenter <em>is</em> the attribution map. Maximally robust geometric consensus, at the cost of losing sign information.</p>
+          </div>
+          <div class="variant">
+            <span class="name">WG<sub>Bary×Grad</sub></span>
+            <span class="formula">G<sub>W</sub> = μ*<sub>λ</sub> × ∇<sub>x<sub>in</sub></sub>φ</span>
+            <p>The barycenter as a spatial mask on the base gradient. The barycenter supplies localisation; the gradient restores sign and amplitude contrast.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================== EXPERIMENTS ============ -->
+<section id="experiments">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">06 — Experimental setting</p>
+      <h2>Kilometre-scale forecasting over France, on a meteorologist-validated model.</h2>
+    </div>
+
+    <div class="setup-grid">
+      <div data-reveal>
+        <dl class="kv">
+          <dt>Dataset</dt>
+          <dd><b>TITAN</b> — derived from Météo-France's operational <b>AROME</b> limited-area model.</dd>
+          <dt>Resolution</dt>
+          <dd>0.025° ≈ <b>2.5 km</b>, regular lat–lon grid, <b>1-hour</b> analyses.</dd>
+          <dt>Domain</dt>
+          <dd>France subdomain, <b>512 × 640</b> grid points, <b>21 channels</b> (5 surface + 16 upper-air across 250/500/700/850&nbsp;hPa).</dd>
+          <dt>Model</dt>
+          <dd><b>UNetRPP</b>, a hybrid convolutional–attention U-Net trained with <b>Py4cast</b>, weights validated by meteorologists. Fixed-weight regime throughout.</dd>
+          <dt>Splits</dt>
+          <dd>Train 2020–2022 (1&nbsp;h step); test 2023 (3&nbsp;h step).</dd>
+          <dt>Explained pair</dt>
+          <dd>Total surface precipitation (<code>aro_tp_0m</code>) over a Paris ROI, with respect to zonal wind at 250&nbsp;hPa (<code>aro_u_250hpa</code>) — a canonical jet-stream / precipitation link.</dd>
+          <dt>Sampling</dt>
+          <dd><span class="math">N</span> = 20 perturbed samples, <span class="math">σ</span> = 0.2 × (max <span class="math">x<sub>t</sub></span> − min <span class="math">x<sub>t</sub></span>), Sinkhorn <span class="math">λ</span> = 0.001, seed 42.</dd>
+          <dt>Evaluation</dt>
+          <dd><b><span class="math">n</span> = 100</b> high-intensity precipitation events from the 2023 test split, at <span class="math">t</span>+1 and <span class="math">t</span>+5.</dd>
+        </dl>
+      </div>
+      <div data-reveal>
+        <figure class="fig" style="margin-top:0">
+          <img src="assets/figures/domain-map.webp" alt="Map of Western Europe showing the full AROME operational domain as a blue dashed rectangle and the smaller training and evaluation subdomain over France as a red solid rectangle." width="1100" height="862" loading="lazy" decoding="async">
+          <figcaption><span class="fig-label">Figure 3</span>Blue dashed: the full AROME operational domain. Red solid: the France subdomain used for training and evaluation.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="section-head" data-reveal style="margin-top:clamp(2.5rem,5vw,4rem)">
+      <h3>Metrics</h3>
+      <p>There is no ground truth for an attribution map, so quality is assessed on three independent axes.</p>
+    </div>
+
+    <div class="cards cards-3" data-reveal>
+      <div class="card">
+        <span class="card-num">Faithfulness ↑</span>
+        <h4>ROAD</h4>
+        <p>Mask the top-<span class="math">p</span>% salient pixels by linear imputation and check the prediction degrades more than under random masks of the same size. Reported as the AUC of that binary curve.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Robustness ↓</span>
+        <h4>Local Lipschitz estimate</h4>
+        <p><span class="math">LLE<sub>ℓ2</sub></span> measures amplitude sensitivity to bounded input perturbation. <span class="math">LLE<sub>cos</sub></span> normalises the maps first, so it measures <strong>structural</strong> — spatial pattern — change instead.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">Complexity ↑</span>
+        <h4>Gini index</h4>
+        <p>Spatial concentration. A map spread across the whole domain is uninterpretable to a domain expert, however faithful it may be.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================== RESULTS ============ -->
+<section id="results" class="band">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">07 — Results</p>
+      <h2>The spatial pattern stops moving.</h2>
+      <p class="lede"><span class="math">LLE<sub>cos</sub></span> is the metric that directly measures the failure mode: how much the <em>structure</em> of an explanation rotates under perturbation. This is where the gap is not incremental.</p>
+    </div>
+
+    <div class="bars" data-reveal>
+      <div class="bars-head">
+        <h4>Structural robustness under perturbation</h4>
+        <span class="unit">LLE<sub>cos</sub> ↓ &nbsp;(×10³) &nbsp;· lower is better · <span id="bars-lead">t + 1</span></span>
+      </div>
+      <div id="bars-body"></div>
+      <p class="caption" style="margin-top:1rem">At <span class="math">t</span>+1, WG<sub>Bary</sub> scores <b>0.1</b> against SmoothGrad's <b>2.1</b> — a <b>~21× reduction</b>. Under autoregressive rollout it degrades gracefully to <b>0.2</b> while every baseline gets worse. WG<sub>Bary×Grad</sub> scores worst on this axis by construction: multiplying the barycenter back onto the raw gradient reintroduces the gradient's own instability, which is the price of recovering sign and sparsity.</p>
+    </div>
+
+    <div class="stats" data-reveal>
+      <div class="stat is-red">
+        <span class="n">~21×</span>
+        <p class="k">Reduction in <b>LLE<sub>cos</sub></b> over SmoothGrad at <span class="math">t</span>+1. WG<sub>Bary</sub> is the lowest on <b>both</b> robustness metrics simultaneously.</p>
+      </div>
+      <div class="stat is-blue">
+        <span class="n">0.815<sub></sub></span>
+        <p class="k">Highest <b>faithfulness</b> (ROAD) at <span class="math">t</span>+1, and again at <span class="math">t</span>+5 with 0.762 — surpassing all baselines at both lead times.</p>
+      </div>
+      <div class="stat">
+        <span class="n">0.750</span>
+        <p class="k">Best <b>sparsity</b> (Gini) at <span class="math">t</span>+5 for WG<sub>Bary×Grad</sub>, second-best at <span class="math">t</span>+1 — sign-aware and spatially precise.</p>
+      </div>
+    </div>
+
+    <div class="table-scroll" data-reveal>
+      <table class="results">
+        <caption class="visually-hidden">Quantitative evaluation of attribution quality at one-step and autoregressive lead times</caption>
+        <thead>
+          <tr class="group">
+            <th scope="col"></th>
+            <th scope="colgroup" colspan="4" class="g">One-step (t + 1)</th>
+            <th scope="colgroup" colspan="4" class="g">Autoregressive (t + 5)</th>
+          </tr>
+          <tr>
+            <th scope="col">Method</th>
+            <th scope="col">Spar. ↑</th><th scope="col">Faith. ↑</th><th scope="col">LLE<sub>ℓ2</sub> ↓</th><th scope="col">LLE<sub>cos</sub> ↓</th>
+            <th scope="col">Spar. ↑</th><th scope="col">Faith. ↑</th><th scope="col">LLE<sub>ℓ2</sub> ↓</th><th scope="col">LLE<sub>cos</sub> ↓</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">BaseGrad</td>
+            <td class="m">0.547<span class="sem">±.001</span></td><td class="m">0.772<span class="sem">±.010</span></td><td class="m">0.068<span class="sem">±.001</span></td><td class="m">3.5<span class="sem">±0.07</span></td>
+            <td class="m">0.531<span class="sem">±.002</span></td><td class="m">0.714<span class="sem">±.019</span></td><td class="m">0.128<span class="sem">±.006</span></td><td class="m">4.2<span class="sem">±0.10</span></td>
+          </tr>
+          <tr>
+            <td class="name">IntegratedGrad</td>
+            <td class="m">0.628<span class="sem">±.004</span></td><td class="m second">0.810<span class="sem">±.011</span></td><td class="m">0.080<span class="sem">±.001</span></td><td class="m">2.9<span class="sem">±0.10</span></td>
+            <td class="m">0.632<span class="sem">±.004</span></td><td class="m">0.739<span class="sem">±.018</span></td><td class="m">0.087<span class="sem">±.006</span></td><td class="m">6.3<span class="sem">±0.10</span></td>
+          </tr>
+          <tr>
+            <td class="name">SmoothGrad</td>
+            <td class="m">0.539<span class="sem">±.002</span></td><td class="m">0.809<span class="sem">±.012</span></td><td class="m">0.046<span class="sem">±.001</span></td><td class="m second">2.1<span class="sem">±0.05</span></td>
+            <td class="m">0.526<span class="sem">±.001</span></td><td class="m">0.757<span class="sem">±.017</span></td><td class="m">0.083<span class="sem">±.004</span></td><td class="m second">2.6<span class="sem">±0.06</span></td>
+          </tr>
+          <tr>
+            <td class="name">VarGrad</td>
+            <td class="m best">0.871<span class="sem">±.004</span></td><td class="m">0.809<span class="sem">±.012</span></td><td class="m second">0.024<span class="sem">±.001</span></td><td class="m">2.3<span class="sem">±0.06</span></td>
+            <td class="m second">0.710<span class="sem">±.006</span></td><td class="m">0.740<span class="sem">±.013</span></td><td class="m second">0.058<span class="sem">±.004</span></td><td class="m">3.0<span class="sem">±0.10</span></td>
+          </tr>
+          <tr class="ours sep">
+            <td class="name">WG<sub>Bary</sub></td>
+            <td class="m">0.340<span class="sem">±.002</span></td><td class="m best">0.815<span class="sem">±.011</span></td><td class="m best">0.023<span class="sem">±.001</span></td><td class="m best">0.1<span class="sem">±0.01</span></td>
+            <td class="m">0.330<span class="sem">±.002</span></td><td class="m best">0.762<span class="sem">±.016</span></td><td class="m best">0.047<span class="sem">±.002</span></td><td class="m best">0.2<span class="sem">±0.01</span></td>
+          </tr>
+          <tr class="ours">
+            <td class="name">WG<sub>Bary×Grad</sub></td>
+            <td class="m second">0.849<span class="sem">±.003</span></td><td class="m">0.800<span class="sem">±.010</span></td><td class="m">0.045<span class="sem">±.001</span></td><td class="m">3.6<span class="sem">±0.08</span></td>
+            <td class="m best">0.750<span class="sem">±.004</span></td><td class="m second">0.760<span class="sem">±.017</span></td><td class="m">0.075<span class="sem">±.004</span></td><td class="m">4.3<span class="sem">±0.10</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tbl-note">
+      <span><b style="color:var(--red)">Bold</b> = best</span>
+      <span><span class="second">Underline</span> = second best</span>
+      <span>Mean ± SEM over <span class="math">n</span> = 100 events</span>
+      <span>LLE<sub>cos</sub> reported ×10³</span>
+      <span>Sparsity: Gini · Faithfulness: ROAD · Robustness: LLE</span>
+    </p>
+
+    <div class="section-head" data-reveal style="margin-top:clamp(3rem,6vw,4.5rem)">
+      <h3>Side by side</h3>
+      <p>Drag to wipe between the pointwise average and the geometric consensus, on the same event and the same region of interest.</p>
+    </div>
+
+    <div class="compare-wrap" data-reveal>
+      <div>
+        <div class="compare" id="compare" role="slider" tabindex="0"
+             aria-label="Wipe between SmoothGrad and WassersteinGrad attribution maps"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% WassersteinGrad">
+          <img src="assets/figures/map-smoothgrad-t5.webp" alt="SmoothGrad attribution at t+5: incoherent, fragmented patches spread across western France." width="660" height="526" loading="lazy" decoding="async" data-compare="base">
+          <img src="assets/figures/map-wgbary-t5.webp" alt="WassersteinGrad barycenter attribution at t+5: a single broad, coherent region of influence near the Atlantic coastline." width="660" height="526" loading="lazy" decoding="async" data-compare="top" class="top-layer">
+          <span class="compare-tag l">SmoothGrad</span>
+          <span class="compare-tag r">WG<sub>Bary</sub></span>
+          <div class="compare-handle" aria-hidden="true"></div>
+        </div>
+        <p class="caption">Lead time <span class="math">t</span>+5, autoregressive. Use the arrow keys when focused.</p>
+      </div>
+      <div>
+        <h4>What changes at longer lead times</h4>
+        <p style="font-size:.93rem;color:var(--ink-2)">At <span class="math">t</span>+5 the differences sharpen. BaseGrad and SmoothGrad remain dominated by incoherent patterns with no stable spatial organisation.</p>
+        <p style="font-size:.93rem;color:var(--ink-2)">WG<sub>Bary</sub> keeps producing a geographically coherent attribution. Its support does broaden relative to <span class="math">t</span>+1 — which is the honest answer: uncertainty genuinely is larger at longer horizons.</p>
+        <p style="font-size:.93rem;color:var(--ink-2)">WG<sub>Bary×Grad</sub> instead yields a sparser attribution concentrated near the Atlantic coastline, highlighting the dominant contributing regions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================== INTERPRETATION ========= -->
+<section id="meaning">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">08 — Interpretation</p>
+      <h2>Why this should change how you explain a physical model.</h2>
+    </div>
+
+    <div class="cards cards-3" data-reveal>
+      <div class="card">
+        <span class="card-num">For forecasters</span>
+        <h4>An explanation you can act on</h4>
+        <p>A map that reports influence 100&nbsp;km from where the model actually attends is worse than no map — it invites the wrong operational conclusion. Alignment between where a model attends and where its explanation says it attends is a precondition for trust, not a nice-to-have.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">For XAI</span>
+        <h4>Pointwise averaging encodes an assumption</h4>
+        <p>Every smoothing method that averages perturbed attributions assumes the perturbation acts on amplitude. On data with continuous structural geometry and advective movement, that assumption is simply false — and the aggregation operator, not the sampling, is what needs replacing.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">For the transfer</span>
+        <h4>Vision methods don't port for free</h4>
+        <p>An invitation to reconsider the direct transfer of XAI methodology from computer vision to the physical sciences, where spatial structure and physical causality impose fundamentally different requirements on explanation quality.</p>
+      </div>
+    </div>
+
+    <div class="section-head" data-reveal style="margin-top:clamp(3rem,6vw,4.5rem)">
+      <h3>A sanity check the method passes</h3>
+      <p>Summarising each attribution map by its weighted barycenter, weighted covariance, and 95% confidence ellipse recovers a known physical fact — without being told it.</p>
+    </div>
+
+    <figure class="fig" data-reveal>
+      <img src="assets/figures/receptive-field-altitude.webp" alt="Four attribution maps over France for zonal wind at 250, 500 and 850 hPa and at 10 metres, each overlaid with a red 95 percent influence ellipse. The ellipses shrink monotonically as altitude decreases." width="2000" height="450" loading="lazy" decoding="async">
+      <figcaption><span class="fig-label">Physical validation</span>Ellipse area falls monotonically with altitude — 0.37 at <span class="math">u</span>&nbsp;250&nbsp;hPa, 0.27 at 500&nbsp;hPa, 0.15 at 850&nbsp;hPa, 0.10 at 10&nbsp;m wind. <b>Effective receptive fields expand with altitude</b>, consistent with upper-level flow steering precipitation over longer distances.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================================================ LIMITATIONS =========== -->
+<section id="limitations" class="band">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">09 — Limitations &amp; what's next</p>
+      <h2>What this work does not yet settle.</h2>
+    </div>
+
+    <div class="lim-grid" data-reveal>
+      <div>
+        <h4 style="margin-bottom:1rem">Limitations</h4>
+        <ul class="lim-list">
+          <li><b>One model, one dataset.</b> Evaluation focuses on UNetRPP with pretrained, meteorologist-validated parameters. The mechanistic analysis applies to any model containing convolution/pooling or Transformer layers, but generalisation to other state-of-the-art architectures and spatial domains remains to be shown.</li>
+          <li><b>The noise is physically uninformed.</b> Standard SmoothGrad and our method both perturb inputs with white Gaussian noise, which creates atmospheric states that cannot physically exist.</li>
+          <li><b>WG<sub>Bary</sub> is sign-free.</b> The barycenter represents the geometric uncertainty of displaced attributions, so it is less sparse than the alternatives and discards the direction of influence. WG<sub>Bary×Grad</sub> trades geometric interpretability back for sparsity and sign.</li>
+          <li><b>Quality is measured by proxy.</b> The metrics are proxies, not evidence that an operational decision actually improves.</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="margin-bottom:1rem">Future work</h4>
+        <ul class="lim-list">
+          <li><b>Physically admissible perturbations.</b> Replace isotropic Gaussian noise with perturbations constrained by climatology, so the perturbed samples remain physically realisable atmospheric states.</li>
+          <li><b>A metric for physical plausibility.</b> The open problem: how do you <em>quantify</em> that an attribution map is physically right, rather than merely stable?</li>
+          <li><b>Meteorological case studies.</b> Move from benchmark events to real storms and extremes.</li>
+          <li><b>Global, graph-based models.</b> Ongoing work extends the framework to ECMWF's AIFS through an Anemoi plugin, running against an operational checkpoint with attributions through the multi-step rollout.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-head" data-reveal style="margin-top:clamp(3rem,6vw,4.5rem)">
+      <h3>Early signal on a global model</h3>
+      <p>Preliminary, on a different architecture, resolution and lead time — a graph encoder–processor–decoder at ~0.25° with 6-hour steps, attributing 2&nbsp;m temperature over Paris to 10&nbsp;m zonal wind at 12&nbsp;h.</p>
+    </div>
+
+    <div class="cards cards-2" data-reveal style="background:var(--rule)">
+      <figure class="card" style="padding:0">
+        <img src="assets/figures/anemoi-smoothgrad.webp" alt="SmoothGrad attribution on the AIFS global model: fragmented, sign-alternating red and blue speckle across western Europe with no stable spatial organisation." width="1100" height="630" loading="lazy" decoding="async">
+        <figcaption style="padding:1rem 1.2rem;font-size:.83rem;color:var(--ink-3)"><b style="font-family:var(--mono);font-size:.75rem;color:var(--ink-2)">SmoothGrad</b> — fragmented, sign-alternating speckle, no stable spatial organisation.</figcaption>
+      </figure>
+      <figure class="card" style="padding:0">
+        <img src="assets/figures/anemoi-wassersteingrad.webp" alt="WassersteinGrad attribution on the AIFS global model: a single bright coherent region of influence stretching across northern France and the Channel." width="1100" height="660" loading="lazy" decoding="async">
+        <figcaption style="padding:1rem 1.2rem;font-size:.83rem;color:var(--ink-3)"><b style="font-family:var(--mono);font-size:.75rem;color:var(--red)">WG<sub>Bary</sub></b> — a single coherent region of influence.</figcaption>
+      </figure>
+    </div>
+    <p class="caption">Preliminary result over 10 events at 12&nbsp;h lead time: faithfulness 0.796 vs 0.716, LLE<sub>cos</sub> 0.00009 vs 0.00071 for SmoothGrad. Not part of the paper's evaluation — reported here as an indication that the effect is not specific to the regional model.</p>
+  </div>
+</section>
+
+<!-- ====================================================== CITE ============ -->
+<section id="cite">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">10 — Citation</p>
+      <h2>BibTeX</h2>
+    </div>
+
+    <div class="bib" data-reveal>
+      <button class="copy-btn" type="button" id="copy-bib" data-target="bibtex">Copy</button>
+      <pre id="bibtex"><code>@article{essafouri2026wassersteingrad,
+  title   = {Explanation of Dynamic Physical Field Predictions using
+             WassersteinGrad: Application to Autoregressive Weather Forecasting},
+  author  = {Essafouri, Younes and Raynaud, Laure and
+             Drozda, Luciano and Risser, Laurent},
+  journal = {arXiv preprint arXiv:2604.22580},
+  year    = {2026}
+}</code></pre>
+    </div>
+
+    <div class="callout" data-reveal>
+      <span class="who">Acknowledgements</span>
+      <p>This work has benefited from the AI Interdisciplinary Institute ANITI. ANITI is funded by the France 2030 program under the Grant agreement n°ANR-23-IACL-0002.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ==================================================== FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h5>Paper</h5>
+        <ul>
+          <li><a href="https://arxiv.org/abs/2604.22580">arXiv:2604.22580</a></li>
+          <li><a href="https://arxiv.org/abs/2604.22580">PDF</a></li>
+          <li><a href="#cite">BibTeX</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Code &amp; data</h5>
+        <ul>
+          <li><a href="https://github.com/meteofrance/py4cast">Py4cast</a></li>
+          <li><a href="https://huggingface.co/datasets/meteofrance/titan">TITAN dataset</a></li>
+          <li><a href="https://github.com/ecmwf/anemoi-core">Anemoi</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Authors</h5>
+        <ul>
+          <li><a href="mailto:younes.essafouri@cnrs.fr">Younes Essafouri</a></li>
+          <li><a href="mailto:laure.raynaud@meteo.fr">Laure Raynaud</a></li>
+          <li><a href="mailto:drozda@cerfacs.fr">Luciano Drozda</a></li>
+          <li><a href="mailto:laurent.risser@cnrs.fr">Laurent Risser</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Institutions</h5>
+        <ul>
+          <li><a href="https://www.math.univ-toulouse.fr/">Institut de Mathématiques de Toulouse</a></li>
+          <li><a href="https://www.umr-cnrm.fr/">Météo-France / CNRM</a></li>
+          <li><a href="https://cerfacs.fr/">Cerfacs</a></li>
+          <li><a href="https://aniti.univ-toulouse.fr/">ANITI</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-base">
+      <p>Preprint under review · Figures reproduced from the paper and the associated presentation.</p>
+      <p><a href="../index.html">← Younes Essafouri</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>

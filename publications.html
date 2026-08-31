@@ -35,57 +35,104 @@
 </nav>
 
 <header style="padding: 150px 0 60px; border-bottom: 1px solid var(--rule-soft);">
-  <div class="container" style="max-width: 780px;">
+  <div class="container" style="max-width: 880px;">
     <div class="eyebrow"><span class="dot"></span> Publications &amp; Talks</div>
-    <h1 style="font-size: clamp(36px,5vw,58px); font-weight: 400;">Written &amp; presented.</h1>
+    <h1 style="font-size: clamp(36px,5vw,58px); font-weight: 400; margin-bottom: 22px;">Written &amp; presented.</h1>
+    <p style="font-size: 17.5px; line-height: 1.6; max-width: 640px; color: var(--ink-soft);">Work from the PhD on explainability for deep weather forecasting — a method paper on aggregating explanations geometrically, and a framework presented to the geosciences community.</p>
   </div>
 </header>
 
 <section>
-  <div class="container" style="max-width: 820px;">
-    <div class="section-head reveal">
-      <h2 style="font-size: 24px;">Publications</h2>
-    </div>
-    <div class="reveal">
-      <div class="pub-row">
-        <div class="pub-year">2026</div>
-        <div>
-          <span class="tag tag-accent" style="margin-bottom: 10px; display: inline-block;">Preprint</span>
-          <h3>Explanation of Dynamic Physical Field Predictions using WassersteinGrad</h3>
-          <div class="pub-authors">Y. Essafouri</div>
-          <div class="pub-venue">arXiv preprint · submitted to NeurIPS 2026</div>
-          <div class="pub-links">
-            <span class="pub-note">Link to appear on publication</span>
+  <div class="container">
+
+    <article class="pub-entry reveal">
+      <figure class="pub-figure">
+        <div class="pub-plate is-dark">
+          <div class="pub-duo">
+            <figure>
+              <img src="assets/pub/barycenter-pointwise-mean.webp" alt="Pointwise mean of eight shifted ring-shaped measures: a smeared, broken annulus." width="512" height="512" loading="lazy" decoding="async">
+              <figcaption>Pointwise mean</figcaption>
+            </figure>
+            <figure class="is-good">
+              <img src="assets/pub/barycenter-wasserstein.webp" alt="Wasserstein barycenter of the same eight measures: a single sharp ring." width="512" height="512" loading="lazy" decoding="async">
+              <figcaption>Wasserstein barycenter</figcaption>
+            </figure>
           </div>
         </div>
-      </div>
-      <div class="pub-row">
-        <div class="pub-year">2026</div>
-        <div>
-          <span class="tag" style="margin-bottom: 10px; display: inline-block;">Conference</span>
-          <h3>A Framework for Explainable AI in Weather Forecasting: Diagnosing Deep Learning Models via Gradient-Based Attributions</h3>
-          <div class="pub-authors">Essafouri, Y., Seznec, C., Drozda, L., Raynaud, L., Risser, L.</div>
-          <div class="pub-venue">EGU General Assembly 2026, Vienna, Austria — EGU26-4039</div>
-          <div class="pub-links">
-            <a href="https://doi.org/10.5194/egusphere-egu26-4039" target="_blank" rel="noopener">doi.org/10.5194/egusphere-egu26-4039 →</a>
-          </div>
+        <figcaption class="pub-figcap"><b>The idea in one picture.</b> Both panels aggregate the same eight measures. Averaging pixel by pixel destroys the structure; averaging geometrically keeps it.</figcaption>
+      </figure>
+
+      <div class="pub-body">
+        <div class="tag-row">
+          <span class="tag tag-accent">Preprint</span>
+          <span class="tag">Under review</span>
+        </div>
+        <h3>Explanation of Dynamic Physical Field Predictions using WassersteinGrad</h3>
+        <div class="pub-authors"><b>Essafouri, Y.</b>, Raynaud, L., Drozda, L., Risser, L.</div>
+        <div class="pub-venue">arXiv:2604.22580 · 2026</div>
+        <p class="pub-abstract">Perturbing the input of a weather model does not make its explanation noisier — it makes it move. We show that stochastic perturbations geometrically displace gradient attributions on atmospheric fields, then replace pointwise averaging with an entropic Wasserstein barycenter to recover a spatially coherent explanation.</p>
+        <div class="pub-links">
+          <a class="is-primary" href="wassersteingrad/index.html">Project page →</a>
+          <a href="https://arxiv.org/abs/2604.22580" target="_blank" rel="noopener">arXiv</a>
+          <a href="wassersteingrad/index.html#cite">BibTeX</a>
         </div>
       </div>
-    </div>
+    </article>
+
+    <article class="pub-entry reveal">
+      <figure class="pub-figure">
+        <div class="pub-plate is-paper">
+          <div class="pub-duo">
+            <figure>
+              <img src="assets/pub/ellipse-250hpa.webp" alt="Attribution map over France for zonal wind at 250 hPa, with a large red 95 percent influence ellipse covering much of northern France." width="760" height="697" loading="lazy" decoding="async">
+              <figcaption>u · 250 hPa</figcaption>
+            </figure>
+            <figure>
+              <img src="assets/pub/ellipse-10m.webp" alt="Attribution map for 10 metre wind, with a much smaller red influence ellipse concentrated near Paris." width="760" height="689" loading="lazy" decoding="async">
+              <figcaption>wind · 10 m</figcaption>
+            </figure>
+          </div>
+        </div>
+        <figcaption class="pub-figcap"><b>Effective receptive fields expand with altitude.</b> The 95% influence ellipse shrinks from upper-level flow down to surface wind — a physical signal the model was never told about.</figcaption>
+      </figure>
+
+      <div class="pub-body">
+        <div class="tag-row">
+          <span class="tag tag-accent">Conference</span>
+          <span class="tag">Poster</span>
+        </div>
+        <h3>A Framework for Explainable AI in Weather Forecasting: Diagnosing Deep Learning Models via Gradient-Based Attributions</h3>
+        <div class="pub-authors"><b>Essafouri, Y.</b>, Seznec, C., Drozda, L., Raynaud, L., Risser, L.</div>
+        <div class="pub-venue">EGU General Assembly 2026, Vienna · EGU26-4039</div>
+        <p class="pub-abstract">A four-step framework for producing localised explanations of neural weather forecasts: choose an input field, an output variable, and a region of interest, then read the attribution back as a map. Presented to bridge machine-learning explainability and operational meteorology.</p>
+        <div class="pub-links">
+          <a href="https://doi.org/10.5194/egusphere-egu26-4039" target="_blank" rel="noopener">DOI →</a>
+        </div>
+      </div>
+    </article>
+
   </div>
 </section>
 
 <section style="border-bottom: none; padding-bottom: 100px;">
-  <div class="container" style="max-width: 820px;">
+  <div class="container" style="max-width: 880px;">
     <div class="section-head reveal">
-      <h2 style="font-size: 24px;">Talks &amp; posters</h2>
+      <div class="eyebrow"><span class="dot"></span> Talks &amp; posters</div>
+      <h2 style="font-size: clamp(24px,3vw,32px);">Presented</h2>
     </div>
     <div class="reveal">
-      <div class="pub-row">
-        <div class="pub-year">May 2026</div>
+      <div class="talk-row">
+        <div class="talk-when">May 2026</div>
         <div>
-          <h3 style="font-size: 16.5px;">A Framework for Explainable AI in Weather Forecasting</h3>
-          <div class="pub-venue">Poster — EGU General Assembly, Vienna</div>
+          <h3>A Framework for Explainable AI in Weather Forecasting</h3>
+          <div class="talk-where">Poster — EGU General Assembly, Vienna</div>
+        </div>
+      </div>
+      <div class="talk-row">
+        <div class="talk-when">2026</div>
+        <div>
+          <h3>Explainable AI for Data-Driven Weather Forecasting</h3>
+          <div class="talk-where">Séminaire doctoral, équipe Stat&amp;Opt — Institut de Mathématiques de Toulouse</div>
         </div>
       </div>
     </div>
