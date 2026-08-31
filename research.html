@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Research — Younes Essafouri</title>
-<meta name="description" content="Gradient-based attribution methods for explainable AI in numerical weather prediction: SmoothGrad, VarGrad, WassersteinGrad, applied to GraphCast, UNETR++, AIFS and AROME.">
+<meta name="description" content="Explainable AI for numerical weather prediction — attribution methods that trace a deep forecast back to the atmospheric fields that produced it.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,85 +38,9 @@
   <div class="container" style="max-width: 880px;">
     <div class="eyebrow"><span class="dot"></span> Research</div>
     <h1 style="font-size: clamp(36px,5.4vw,64px); font-weight: 400; margin-bottom: 24px;">Can a weather model's reasoning survive a second opinion?</h1>
-    <p style="font-size: 18px; line-height: 1.6; max-width: 680px; color: var(--ink-soft);">Deep learning forecasters like GraphCast and AIFS now rival or beat classical numerical weather prediction on many metrics — but their internal reasoning is opaque. My PhD builds attribution methods that trace a forecast back to the input fields that produced it, so operational meteorologists can tell physically grounded reasoning from spurious correlation.</p>
+    <p style="font-size: 18px; line-height: 1.6; max-width: 680px; color: var(--ink-soft);">Deep learning forecasters now rival or beat classical numerical weather prediction on many metrics — but their internal reasoning is opaque. My PhD builds attribution methods that trace a forecast back to the input fields that produced it, so operational meteorologists can tell physically grounded reasoning from spurious correlation.</p>
   </div>
 </header>
-
-<section>
-  <div class="container" style="max-width: 880px;">
-    <div class="section-head reveal">
-      <div class="eyebrow"><span class="dot"></span> Method</div>
-      <h2>From a raw gradient to a trustworthy explanation</h2>
-      <p>Attribution methods for physical fields face a specific problem: raw input gradients are noisy, and models predicting continuous dynamic fields (not single class scores) don't fit classical saliency recipes cleanly. The pipeline below is how I get from "here's a forecast" to "here's what drove it."</p>
-    </div>
-    <div class="pipeline reveal">
-      <div class="pipeline-step">
-        <div class="step-num">01</div>
-        <h4>Input field</h4>
-        <p>Geopotential, humidity, wind, temperature — pressure-level fields fed to the forecaster (ERA5-derived, via xarray).</p>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">02</div>
-        <h4>Forward model</h4>
-        <p>GraphCast, UNETR++, AIFS or AROME predicts the next physical state.</p>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">03</div>
-        <h4>Noisy gradients</h4>
-        <p>Backpropagate to the input. SmoothGrad / VarGrad average many noised passes to reduce variance.</p>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">04</div>
-        <h4>WassersteinGrad</h4>
-        <p>Wasserstein barycenters aggregate attribution distributions across samples, denoising explanations for dynamic fields.</p>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">05</div>
-        <h4>Explanation map</h4>
-        <p>A spatially coherent attribution field, legible to a forecaster reading it like a weather chart.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <div class="section-head reveal">
-      <div class="eyebrow"><span class="dot"></span> Scope</div>
-      <h2>Methods &amp; models</h2>
-      <p>The attribution toolkit and the deep learning weather models it's been tested against.</p>
-    </div>
-    <div class="two-col reveal">
-      <div>
-        <h3 style="font-size: 16px; margin-bottom: 14px;">Attribution methods</h3>
-        <div class="interest-list" style="margin-bottom: 24px;">
-          <span class="tag tag-accent">SmoothGrad</span>
-          <span class="tag tag-accent">VarGrad</span>
-          <span class="tag tag-accent">Wasserstein barycenters</span>
-          <span class="tag tag-accent">WassersteinGrad</span>
-        </div>
-        <h3 style="font-size: 16px; margin-bottom: 14px;">Weather &amp; deep learning models studied</h3>
-        <div class="interest-list">
-          <span class="tag">GraphCast</span>
-          <span class="tag">UNETR++</span>
-          <span class="tag">AIFS</span>
-          <span class="tag">AROME</span>
-        </div>
-      </div>
-      <div>
-        <h3 style="font-size: 16px; margin-bottom: 14px;">Tech stack</h3>
-        <div class="stack-strip">
-          <div class="stack-item"><span class="stack-name">Python</span><span class="stack-role">Core language</span></div>
-          <div class="stack-item"><span class="stack-name">PyTorch</span><span class="stack-role">Model training &amp; autograd</span></div>
-          <div class="stack-item"><span class="stack-name">Py4cast</span><span class="stack-role">Weather-model training framework</span></div>
-          <div class="stack-item"><span class="stack-name">Anemoi</span><span class="stack-role">ECMWF ML-NWP toolkit</span></div>
-          <div class="stack-item"><span class="stack-name">xarray</span><span class="stack-role">Gridded / ERA5 climate data</span></div>
-          <div class="stack-item"><span class="stack-name">Matplotlib</span><span class="stack-role">Attribution &amp; field visualization</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section id="projects">
   <div class="container">
@@ -130,8 +54,8 @@
         <div class="pr-id">01</div>
         <div>
           <h3>Explaining Neural Weather Models</h3>
-          <div class="pr-sub">Gradient-based attributions for deep forecasters — PhD research</div>
-          <p class="pr-desc">A framework that interrogates deep forecasting models by tracing the influence of input fields (geopotential, humidity, wind) onto predicted variables via SmoothGrad, VarGrad and WassersteinGrad. The goal: separate real physical reasoning from spurious correlation, and make the results legible to operational meteorologists.</p>
+          <div class="pr-sub">PhD research — Institut de Mathématiques de Toulouse</div>
+          <p class="pr-desc">A framework that interrogates deep forecasting models by tracing the influence of input fields — geopotential, humidity, wind — onto the variables they predict. The goal: separate real physical reasoning from spurious correlation, and make the result legible to an operational meteorologist.</p>
           <div class="pr-tags"><span class="tag tag-accent">XAI</span><span class="tag">PyTorch</span><span class="tag">ERA5</span><span class="tag">Attribution</span></div>
         </div>
         <div class="pr-year">2025 — present</div>
