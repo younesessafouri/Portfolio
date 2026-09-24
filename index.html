@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Younes Essafouri — Explainable AI for Weather Forecasting</title>
-<meta name="description" content="Younes Essafouri, PhD researcher at the Institut de Mathématiques de Toulouse, studies how neural weather models arrive at their forecasts, and whether their reasoning makes physical sense.">
+<meta name="description" content="Younes Essafouri, PhD researcher at the Institut de Mathématiques de Toulouse, studies what neural weather models rely on to make their forecasts, and whether it makes physical sense.">
 <meta name="author" content="Younes Essafouri">
-<meta name="theme-color" content="#f5f2ea">
+<meta name="theme-color" content="#e8edef">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Younes Essafouri — Explainable AI for Weather Forecasting">
-<meta property="og:description" content="How neural weather models arrive at their forecasts, and whether their reasoning makes physical sense.">
+<meta property="og:description" content="What neural weather models rely on to make their forecasts, and whether it makes physical sense.">
 <meta property="og:image" content="assets/work/og-card.webp">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="fonts/newsreader-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=20260924">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f5f2ea'/%3E%3Cpath d='M3 12c5-5 9 4 14-1s8-4 12-2M3 20c5-4 9 3 14-1s8-3 12-1' fill='none' stroke='%233b7980' stroke-width='1.6'/%3E%3Crect x='18.5' y='13.5' width='6' height='6' fill='none' stroke='%23d95a22' stroke-width='1.8'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css?v=20260925">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23e8edef'/%3E%3Cpath d='M16 4v8M16 20v8M4 16h8M20 16h8' stroke='%23e0532a' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23e0532a'/%3E%3C/svg%3E">
 <script>document.documentElement.classList.add("js");</script>
 <script type="application/ld+json">
 {
@@ -38,286 +38,150 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<header class="site-head wrap">
-  <p class="site-mark site-mark--home"><span>Toulouse · 43.60° N 1.44° E</span></p>
-  <nav class="site-nav" aria-label="Primary">
-    <ul>
-      <li><a href="research.html">Research</a></li>
-      <li><a href="publications.html">Publications</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="assets/YounesEssafouri_CV.pdf">CV</a></li>
-    </ul>
-  </nav>
-</header>
+<header class="hero" data-field>
+  <div class="field-stage">
+    <noscript><img class="field-poster" src="assets/work/fig0.webp" alt=""></noscript>
+    <canvas role="img" aria-label="Schematic weather map of south-western Europe: contours and wind of the 500 hPa field flowing from the south-west, a crosshair over Toulouse, and a blue explanation region that grows upstream over Spain and the Atlantic as the forecast lead time increases."></canvas>
+  </div>
 
-<main id="main">
-
-<!-- ====================================================== IDENTITY + FIG. 0 -->
-<section class="hero wrap grid" aria-labelledby="name">
-  <div class="hero-id">
+  <div class="hero-id wrap">
     <div class="hero-title">
       <p class="hero-kicker label">PhD researcher · <b>Institut de Mathématiques de Toulouse</b></p>
-      <h1 class="hero-name" id="name">Younes<br>Essafouri</h1>
+      <h1 class="hero-name">Younes<br>Essafouri</h1>
       <p class="hero-field">Explainable AI for Weather Forecasting</p>
     </div>
     <div class="hero-text">
-      <p class="hero-lede">I study how neural weather models arrive at their forecasts, and whether their reasoning makes physical sense.</p>
-      <ul class="links" aria-label="Elsewhere online">
-        <li><a href="mailto:younes.essafouri@math.univ-toulouse.fr">Email</a></li>
-        <li><a href="https://github.com/YounesEssafouri" rel="me">GitHub</a></li>
-        <li><a href="https://scholar.google.com/citations?user=xJJI31wAAAAJ&amp;hl=en" rel="me">Scholar</a></li>
-        <li><a href="https://www.linkedin.com/in/younes-essafouri/" rel="me">LinkedIn</a></li>
+      <p class="hero-lede">I study what neural weather models rely on to make a forecast, and whether it makes physical sense.</p>
+      <ul class="links" aria-label="Links">
+        <li><a href="#publications">Publications</a></li>
+        <li><a href="about.html">About</a></li>
         <li><a href="assets/YounesEssafouri_CV.pdf">CV</a></li>
+        <li><a href="https://scholar.google.com/citations?user=xJJI31wAAAAJ&amp;hl=en" rel="me">Scholar</a></li>
+        <li><a href="https://github.com/YounesEssafouri" rel="me">GitHub</a></li>
       </ul>
     </div>
   </div>
 
-  <figure class="hero-plate field" data-field>
-    <div class="field-stage">
-      <noscript><img class="field-poster" src="assets/work/fig0.webp" width="1640" height="1262" alt=""></noscript>
-      <canvas role="img" aria-label="Schematic forecast map of France: contours of the 500 hPa field and wind streaks flow from the south-west, an orange target box sits over Paris, and a blue attribution region upstream shows where the rain forecast over Paris comes from. The region moves further upstream as the forecast lead time grows."></canvas>
-      <ul class="field-legend" aria-hidden="true">
-        <li class="k k-atmo">Z 500 hPa · dam</li>
-        <li class="k k-wind">wind</li>
-        <li class="k k-target">target</li>
-        <li class="k k-xai">attribution</li>
-      </ul>
+  <div class="field-ui">
+    <div class="toggle" role="group" aria-label="Layer shown on the map">
+      <button type="button" data-field-view="forecast" aria-pressed="true">Forecast</button>
+      <button type="button" data-field-view="explanation" aria-pressed="false">Explanation</button>
     </div>
-    <div class="field-controls">
-      <div class="seg" role="group" aria-label="Layer shown">
-        <button type="button" data-field-view="forecast" aria-pressed="true">Forecast</button>
-        <button type="button" data-field-view="explanation" aria-pressed="false">Explanation</button>
+    <div class="lead">
+      <div class="lead-axis">
+        <span class="lead-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        <input type="range" min="1" max="8" step="1" value="4" data-field-lead aria-label="Forecast lead time, in autoregressive steps of 6 hours">
       </div>
-      <div class="lead">
-        <div class="lead-axis">
-          <input type="range" min="0" max="48" step="1" value="24" data-field-lead aria-label="Forecast lead time" aria-valuetext="+24 hours">
-          <div class="lead-ticks" aria-hidden="true"><span>+00</span><span>+12</span><span>+24</span><span>+36</span><span>+48 H</span></div>
-        </div>
-        <output class="lead-out" data-field-lead-out><span>LEAD</span> +24 H</output>
-      </div>
+      <output data-field-lead-out>t+4<span> · 24 h</span></output>
     </div>
-    <figcaption>
-      <span class="fig-n">Fig. 0</span>Looking inside a forecast. <span class="hint-pointer">Move over the map</span><span class="hint-touch">Tap the map</span> to see where the rain forecast over Paris comes from; drag the lead time to trace it upstream. <span class="aside">Schematic, not model output.</span>
-    </figcaption>
-  </figure>
-</section>
-
-<!-- ============================================================ 01 RESEARCH -->
-<section class="research wrap grid" id="research" aria-labelledby="research-q">
-  <p class="sect-mark" data-n="01">Research</p>
-  <h2 class="research-q" id="research-q">When a neural network forecasts rain over Paris, which part of the <em>atmosphere</em> was it looking at?</h2>
-  <div class="research-a">
-    <p>Deep learning models now rival physics-based weather prediction, but they don’t explain themselves. I develop attribution methods that trace a forecast back to the input fields behind it, and test whether those explanations are faithful to the model, stable under perturbation and physically plausible.</p>
-    <a class="text-link" href="research.html">The research in more detail</a>
+    <p class="field-cap"><em>What did the model rely on to forecast rain over <span data-field-place>Toulouse</span>?</em><button type="button" data-field-reset hidden>back to Toulouse</button>
+      <span class="hint"><span class="hint-pointer">Click</span><span class="hint-touch">Tap</span> the map to ask about another place · schematic field</span></p>
   </div>
+</header>
 
-  <figure class="pipeline" data-reveal>
-    <div class="pipeline-scroll" tabindex="0" role="group" aria-label="Figure 1, scrollable">
-      <div class="pipeline-inner">
-        <ol class="pipeline-steps">
-          <li><span class="n">01 · Input</span><span class="d">zonal wind, 250 hPa, t</span></li>
-          <li><span class="n">02 · Forecast</span><span class="d">rain at t&nbsp;+&nbsp;5, target box □ Paris</span></li>
-          <li><span class="n">03 · Explanation</span><span class="d">G = ∂ target / ∂ input</span></li>
-        </ol>
-        <img src="assets/work/pipeline.webp" width="1395" height="380" loading="lazy" decoding="async"
-             alt="Three maps of France. Left: zonal wind at 250 hPa at time t, strongest in the west. Middle: the model's precipitation forecast five steps later, with a small target box over Paris. Right: the gradient of rain in that box with respect to the input wind, concentrated upstream over Brittany and the Atlantic coast.">
-      </div>
-    </div>
-    <p class="scroll-hint" aria-hidden="true">← drag to see the whole figure →</p>
-    <figcaption><span class="fig-n">Fig. 1</span>A local explanation of a real forecast over France, from the WassersteinGrad paper. The explanation is the sensitivity of rain inside the target box to every point of the input wind field.</figcaption>
-  </figure>
-</section>
+<main id="main" class="flow wrap">
 
-<!-- ======================================================== 02 PUBLICATIONS -->
-<div id="publications">
-
-  <!-- piece A · WassersteinGrad -->
-  <article class="band-night" aria-labelledby="wg-title">
-    <div class="wg wrap grid">
-      <h2 class="sect-mark" data-n="02">Publications <a class="text-link" href="publications.html">All publications &amp; talks</a></h2>
-      <p class="statement">Noise doesn’t blur an explanation. <em>It moves it.</em></p>
-
-      <figure class="wg-visual">
-        <div class="compare" data-compare>
-          <img src="assets/work/map-smoothgrad-t1.webp" data-src-t1="assets/work/map-smoothgrad-t1.webp" data-src-t5="assets/work/map-smoothgrad-t5.webp" width="660" height="526" loading="lazy" decoding="async"
-               alt="SmoothGrad attribution map over France: fragmented red and blue speckle around the Paris target.">
-          <div class="compare-top">
-            <img src="assets/work/map-wgbary-t1.webp" data-src-t1="assets/work/map-wgbary-t1.webp" data-src-t5="assets/work/map-wgbary-t5.webp" width="660" height="526" loading="lazy" decoding="async"
-                 alt="WassersteinGrad attribution map: one smooth, coherent region of influence just west of the Paris target.">
-          </div>
-          <span class="compare-tag l">SmoothGrad</span>
-          <span class="compare-tag r">WassersteinGrad</span>
-          <div class="compare-handle" aria-hidden="true"></div>
-          <input type="range" min="0" max="100" value="50" aria-label="Wipe between SmoothGrad and WassersteinGrad">
-        </div>
-        <div class="wg-controls">
-          <div class="seg" role="group" aria-label="Forecast lead time">
-            <button type="button" data-wg-lead="t1" aria-pressed="true">t&nbsp;+&nbsp;1</button>
-            <button type="button" data-wg-lead="t5" aria-pressed="false">t&nbsp;+&nbsp;5</button>
-          </div>
-          <span class="mono">one step · autoregressive</span>
-        </div>
-        <figcaption>Explanations of the same rain forecast over Paris (□) with respect to wind at 250 hPa. Drag across the map to compare.</figcaption>
-        <div class="drift">
-          <p class="v">≈ 115<small>km</small></p>
-          <p>how far a gradient explanation drifts under small input noise at t&nbsp;+&nbsp;5, while the forecast itself changes by less than 1.5 %.</p>
-        </div>
-      </figure>
-
-      <div class="wg-side">
-        <div class="work-meta">
-          <p class="work-kind label">Preprint · 2026 · under review</p>
-          <h3 class="work-title" id="wg-title">Explanation of Dynamic Physical Field Predictions using WassersteinGrad: Application to Autoregressive Weather Forecasting</h3>
-          <p class="work-authors"><b>Younes Essafouri</b>, Laure Raynaud, Luciano Drozda, Laurent Risser</p>
-          <p class="work-desc">Small input perturbations don’t make a weather model’s gradient explanations noisier; they shift them across the map. WassersteinGrad averages the perturbed explanations with optimal transport instead of pixel by pixel, and recovers one coherent region of influence.</p>
-          <ul class="links">
-            <li><a href="https://arxiv.org/abs/2604.22580">Paper</a></li>
-            <li><a href="https://younesessafouri.github.io/WassersteinGrad/">Project page</a></li>
-            <li><button type="button" data-copy="bib-wg">Copy BibTeX</button></li>
-          </ul>
-          <pre id="bib-wg" hidden>@article{essafouri2026wassersteingrad,
-  title   = {Explanation of Dynamic Physical Field Predictions using WassersteinGrad: Application to Autoregressive Weather Forecasting},
-  author  = {Essafouri, Younes and Raynaud, Laure and Drozda, Luciano and Risser, Laurent},
-  journal = {arXiv preprint arXiv:2604.22580},
-  year    = {2026}
+  <section class="flow-row pubs" id="publications" aria-labelledby="pubs-h">
+    <h2 class="label" id="pubs-h">Publications</h2>
+    <ol>
+      <li class="pub">
+        <p class="pub-venue is-accepted">NeurIPS 2026</p>
+        <div>
+          <h3 class="pub-title"><a href="https://arxiv.org/abs/2604.22580">Explanation of Dynamic Physical Field Predictions using WassersteinGrad: Application to Autoregressive Weather Forecasting</a></h3>
+          <p class="pub-authors"><b>Younes Essafouri</b>, Laure Raynaud, Luciano Drozda, Laurent Risser</p>
+          <p class="pub-links">
+            <a href="https://arxiv.org/abs/2604.22580">Paper</a>
+            <a href="https://younesessafouri.github.io/WassersteinGrad/">Project</a>
+            <button type="button" data-copy="bib-wg">BibTeX</button>
+          </p>
+          <pre id="bib-wg" hidden>@inproceedings{essafouri2026wassersteingrad,
+  title         = {Explanation of Dynamic Physical Field Predictions using WassersteinGrad: Application to Autoregressive Weather Forecasting},
+  author        = {Essafouri, Younes and Raynaud, Laure and Drozda, Luciano and Risser, Laurent},
+  booktitle     = {Advances in Neural Information Processing Systems},
+  year          = {2026},
+  eprint        = {2604.22580},
+  archivePrefix = {arXiv}
 }</pre>
         </div>
-
-        <figure class="rings">
-          <div class="rings-in" aria-hidden="true">
-            <img src="assets/work/ring-in-1.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
-            <img src="assets/work/ring-in-2.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
-            <img src="assets/work/ring-in-3.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
-            <img src="assets/work/ring-in-4.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
-            <img src="assets/work/ring-in-5.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
-            <img src="assets/work/ring-in-6.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
-            <img src="assets/work/ring-in-7.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
-            <img src="assets/work/ring-in-8.webp" width="256" height="256" alt="" loading="lazy" decoding="async">
-          </div>
-          <span class="rings-arrow" aria-hidden="true">→</span>
-          <figure>
-            <img src="assets/work/ring-mean.webp" width="512" height="512" loading="lazy" decoding="async" alt="The pixel-wise average of eight shifted rings: a smeared, broken blur.">
-            <figcaption>pixel average</figcaption>
-          </figure>
-          <figure>
-            <img src="assets/work/ring-bary.webp" width="512" height="512" loading="lazy" decoding="async" alt="The Wasserstein barycenter of the same eight rings: one sharp ring.">
-            <figcaption>Wasserstein barycenter</figcaption>
-          </figure>
-          <figcaption class="rings-cap">The idea in one picture: eight displaced copies of the same shape, averaged two ways.</figcaption>
-        </figure>
-      </div>
-    </div>
-  </article>
-
-  <!-- piece B · EGU 2026 -->
-  <article class="egu wrap grid" aria-labelledby="egu-title">
-    <div class="work-meta">
-      <p class="work-kind label">EGU General Assembly 2026 · Vienna · Poster</p>
-      <h3 class="work-title" id="egu-title">A Framework for Explainable AI in Weather Forecasting: Diagnosing Deep Learning Models via Gradient-Based Attributions</h3>
-      <p class="work-authors"><b>Younes Essafouri</b>, Corentin Seznec, Luciano Drozda, Laure Raynaud, Laurent Risser</p>
-      <p class="work-desc">A framework for diagnosing neural weather models with gradient attributions. Summarising each attribution map by its barycenter and a 95 % influence ellipse shows how far the model looks at each level of the atmosphere.</p>
-      <ul class="links">
-        <li><a href="https://doi.org/10.5194/egusphere-egu26-4039">Abstract</a></li>
-        <li><a href="https://doi.org/10.5194/egusphere-egu26-4039">DOI</a></li>
-      </ul>
-    </div>
-
-    <figure class="alt" data-altitude>
-      <ol class="alt-axis" aria-label="Pressure level">
-        <li style="top: 4%"><button type="button" data-level="250hpa" aria-pressed="false">250 hPa<small>≈ 10.4 km</small></button></li>
-        <li style="top: 46%"><button type="button" data-level="500hpa" aria-pressed="false">500 hPa<small>≈ 5.6 km</small></button></li>
-        <li style="top: 81%"><button type="button" data-level="850hpa" aria-pressed="false">850 hPa<small>≈ 1.5 km</small></button></li>
-        <li style="top: 96%"><button type="button" data-level="10m" aria-pressed="true">10 m<small>surface</small></button></li>
-      </ol>
-      <div class="alt-maps">
-        <span class="alt-map-tag" data-level-tag aria-live="polite">u · 10 m</span>
-        <img src="assets/work/level-250hpa.webp" data-level-img="250hpa" width="458" height="366" loading="lazy" decoding="async" alt="Attribution of the Paris forecast to zonal wind at 250 hPa: a wide 95 % influence ellipse around 200 km across.">
-        <img src="assets/work/level-500hpa.webp" data-level-img="500hpa" width="458" height="366" loading="lazy" decoding="async" alt="At 500 hPa: a similar, slightly smaller influence ellipse.">
-        <img src="assets/work/level-850hpa.webp" data-level-img="850hpa" width="458" height="366" loading="lazy" decoding="async" alt="At 850 hPa: a narrower ellipse closer to the target.">
-        <img src="assets/work/level-10m.webp" class="is-on" data-level-img="10m" width="457" height="366" loading="lazy" decoding="async" alt="At 10 metres: a small ellipse hugging the Paris target.">
-      </div>
-      <figcaption>Attribution of the same Paris forecast to zonal wind at four heights, with the 95 % influence ellipse (red) and its barycenter (+). Choose a level.</figcaption>
-    </figure>
-
-    <p class="statement">The higher in the atmosphere, <em>the wider</em> the model looks.</p>
-  </article>
-
-  <!-- talks -->
-  <section class="talks wrap grid" aria-labelledby="talks-h">
-    <h3 class="label" id="talks-h">Talks &amp; posters</h3>
-    <ul class="talk-list">
-      <li><span class="when">May 2026</span><span class="what">A Framework for Explainable AI in Weather Forecasting</span><span class="where">Poster, EGU General Assembly, Vienna</span></li>
-      <li><span class="when">2026</span><span class="what">Explainable AI for Data-Driven Weather Forecasting</span><span class="where">Doctoral seminar, Stat&amp;Opt team, IMT</span></li>
-    </ul>
-    <ul class="links">
-      <li><a href="publications.html">Publications page</a></li>
-      <li><a href="https://scholar.google.com/citations?user=xJJI31wAAAAJ&amp;hl=en">Google Scholar</a></li>
-    </ul>
+      </li>
+      <li class="pub">
+        <p class="pub-venue">EGU 2026 · Poster</p>
+        <div>
+          <h3 class="pub-title"><a href="https://doi.org/10.5194/egusphere-egu26-4039">A Framework for Explainable AI in Weather Forecasting: Diagnosing Deep Learning Models via Gradient-Based Attributions</a></h3>
+          <p class="pub-authors"><b>Younes Essafouri</b>, Corentin Seznec, Luciano Drozda, Laure Raynaud, Laurent Risser</p>
+          <p class="pub-links">
+            <a href="https://doi.org/10.5194/egusphere-egu26-4039">DOI</a>
+            <button type="button" data-copy="bib-egu">BibTeX</button>
+          </p>
+          <pre id="bib-egu" hidden>@inproceedings{essafouri2026framework,
+  title     = {A Framework for Explainable AI in Weather Forecasting: Diagnosing Deep Learning Models via Gradient-Based Attributions},
+  author    = {Essafouri, Younes and Seznec, Corentin and Drozda, Luciano and Raynaud, Laure and Risser, Laurent},
+  booktitle = {EGU General Assembly 2026},
+  address   = {Vienna, Austria},
+  note      = {EGU26-4039},
+  doi       = {10.5194/egusphere-egu26-4039},
+  year      = {2026}
+}</pre>
+        </div>
+      </li>
+      <li class="pub is-talk">
+        <p class="pub-venue">Talk · 2026</p>
+        <div>
+          <h3 class="pub-title">Explainable AI for Data-Driven Weather Forecasting</h3>
+          <p class="pub-meta">Doctoral seminar, Stat&amp;Opt team, Institut de Mathématiques de Toulouse</p>
+        </div>
+      </li>
+    </ol>
   </section>
-</div>
 
-<!-- ============================================================ 03 CURRENTLY -->
-<section class="now wrap grid" aria-labelledby="now-h">
-  <h2 class="sect-mark" data-n="03" id="now-h">Currently</h2>
-  <dl class="now-list">
-    <div><dt>Position</dt><dd>PhD researcher at the Institut de Mathématiques de Toulouse, 2025–2028</dd></div>
-    <div><dt>Research</dt><dd>Explainability and interpretability for neural weather forecasting</dd></div>
-    <div><dt>With</dt><dd>IMT<span class="sep">·</span>Météo-France (CNRM)<span class="sep">·</span>Cerfacs</dd></div>
-    <div><dt>Previously</dt><dd>Grenoble INP – Ensimag<span class="sep">·</span>KTH Stockholm<span class="sep">·</span>Dassault Systèmes<span class="sep">·</span>Laboratoire Hubert Curien</dd></div>
-    <div><dt>Teaching</dt><dd>Statistics practicals, Université Paul Sabatier</dd></div>
-  </dl>
-  <a class="text-link" href="about.html">About, education and teaching</a>
-</section>
+  <section class="flow-row now" aria-labelledby="now-h">
+    <h2 class="label" id="now-h">Currently</h2>
+    <div>
+      <p class="now-line">PhD researcher at the Institut de Mathématiques de Toulouse, 2025–2028. <span>Before that: Grenoble INP – Ensimag, KTH Stockholm, Dassault Systèmes, Laboratoire Hubert Curien.</span></p>
+      <a class="text-link" href="about.html">About, education, teaching</a>
+    </div>
+  </section>
 
-<!-- ============================================================ 04 ELSEWHERE -->
-<section class="elsewhere" aria-labelledby="elsewhere-h">
-  <div class="wrap grid">
-    <h2 class="sect-mark" data-n="04" id="elsewhere-h">Elsewhere</h2>
-    <p class="elsewhere-line">Away from the models I take photographs, draw isometric cities, and read Steinbeck, García Márquez, Hesse and Dazai, <em>usually followed by whatever film was made of them.</em></p>
+  <section class="flow-row elsewhere" aria-labelledby="else-h">
+    <h2 class="label" id="else-h">Elsewhere</h2>
     <ul class="photos">
       <li><figure>
-        <img src="assets/photos/tetouan-480.webp" srcset="assets/photos/tetouan-480.webp 480w, assets/photos/tetouan-960.webp 960w" sizes="(max-width: 639px) 68vw, (max-width: 1023px) 24vw, 23vw" width="480" height="853" loading="lazy" decoding="async" alt="A man in a white djellaba at a doorway in a narrow alley of the Tétouan medina at night, under a hanging lantern.">
-        <figcaption>Tétouan <span>35.57° N 5.37° W</span></figcaption>
+        <img src="assets/photos/tetouan-480.webp" srcset="assets/photos/tetouan-480.webp 480w, assets/photos/tetouan-960.webp 960w" sizes="(max-width: 599px) 62vw, 17vw" width="480" height="853" loading="lazy" decoding="async" alt="A man in a white djellaba at a doorway in a narrow alley of the Tétouan medina at night, under a hanging lantern.">
+        <figcaption><b>Tétouan</b><span>35.6° N</span></figcaption>
       </figure></li>
       <li><figure>
-        <img src="assets/photos/lucerne-480.webp" srcset="assets/photos/lucerne-480.webp 480w, assets/photos/lucerne-960.webp 960w" sizes="(max-width: 639px) 68vw, (max-width: 1023px) 24vw, 23vw" width="480" height="853" loading="lazy" decoding="async" alt="A racing sailboat on Lake Lucerne below wooded hills and tall summer clouds.">
-        <figcaption>Lucerne <span>47.05° N 8.31° E</span></figcaption>
+        <img src="assets/photos/lucerne-480.webp" srcset="assets/photos/lucerne-480.webp 480w, assets/photos/lucerne-960.webp 960w" sizes="(max-width: 599px) 62vw, 17vw" width="480" height="853" loading="lazy" decoding="async" alt="A racing sailboat on Lake Lucerne below wooded hills and tall summer clouds.">
+        <figcaption><b>Lucerne</b><span>47.1° N</span></figcaption>
       </figure></li>
       <li><figure>
-        <img src="assets/photos/montreux-480.webp" srcset="assets/photos/montreux-480.webp 480w, assets/photos/montreux-960.webp 960w" sizes="(max-width: 639px) 68vw, (max-width: 1023px) 24vw, 23vw" width="480" height="853" loading="lazy" decoding="async" alt="Palm fronds and red flowers framing Lake Geneva at Montreux, a boat on turquoise water.">
-        <figcaption>Montreux <span>46.43° N 6.91° E</span></figcaption>
+        <img src="assets/photos/montreux-480.webp" srcset="assets/photos/montreux-480.webp 480w, assets/photos/montreux-960.webp 960w" sizes="(max-width: 599px) 62vw, 17vw" width="480" height="853" loading="lazy" decoding="async" alt="Palm fronds and red flowers framing Lake Geneva at Montreux, a boat on turquoise water.">
+        <figcaption><b>Montreux</b><span>46.4° N</span></figcaption>
       </figure></li>
       <li><figure>
-        <img src="assets/photos/barcelona-480.webp" srcset="assets/photos/barcelona-480.webp 480w, assets/photos/barcelona-960.webp 960w" sizes="(max-width: 639px) 68vw, (max-width: 1023px) 24vw, 23vw" width="480" height="853" loading="lazy" decoding="async" alt="A brick and mosaic gate pillar in Barcelona against a grey sky, with an iron gate below.">
-        <figcaption>Barcelona <span>41.39° N 2.17° E</span></figcaption>
+        <img src="assets/photos/barcelona-480.webp" srcset="assets/photos/barcelona-480.webp 480w, assets/photos/barcelona-960.webp 960w" sizes="(max-width: 599px) 62vw, 17vw" width="480" height="853" loading="lazy" decoding="async" alt="A brick and mosaic gate pillar in Barcelona against a grey sky, with an iron gate below.">
+        <figcaption><b>Barcelona</b><span>41.4° N</span></figcaption>
       </figure></li>
     </ul>
-  </div>
-</section>
-
-<!-- ============================================================== CONTACT -->
-<section class="contact wrap grid" id="contact" aria-labelledby="contact-h">
-  <h2 class="sect-mark" data-n="05" id="contact-h">Contact</h2>
-  <div class="contact-body">
-    <a class="contact-mail" href="mailto:younes.essafouri@math.univ-toulouse.fr">younes.essafouri@math.univ-toulouse.fr</a>
-    <ul class="links">
-      <li><a href="https://github.com/YounesEssafouri" rel="me">GitHub</a></li>
-      <li><a href="https://scholar.google.com/citations?user=xJJI31wAAAAJ&amp;hl=en" rel="me">Google Scholar</a></li>
-      <li><a href="https://www.linkedin.com/in/younes-essafouri/" rel="me">LinkedIn</a></li>
-      <li><a href="https://orcid.org/0009-0005-9830-409X" rel="me">ORCID</a></li>
-      <li><a href="assets/YounesEssafouri_CV.pdf">CV</a></li>
-    </ul>
-  </div>
-</section>
+  </section>
 
 </main>
 
-<footer class="site-foot wrap">
-  <span>© 2026 Younes Essafouri</span>
-  <span>Institut de Mathématiques de Toulouse · 43.60° N 1.44° E</span>
+<footer class="site-foot wrap" id="contact">
+  <a class="foot-mail" href="mailto:younes.essafouri@math.univ-toulouse.fr">younes.essafouri@math.univ-toulouse.fr</a>
+  <ul class="links">
+    <li><a href="https://scholar.google.com/citations?user=xJJI31wAAAAJ&amp;hl=en" rel="me">Google Scholar</a></li>
+    <li><a href="https://github.com/YounesEssafouri" rel="me">GitHub</a></li>
+    <li><a href="https://www.linkedin.com/in/younes-essafouri/" rel="me">LinkedIn</a></li>
+    <li><a href="https://orcid.org/0009-0005-9830-409X" rel="me">ORCID</a></li>
+    <li><a href="assets/YounesEssafouri_CV.pdf">CV</a></li>
+  </ul>
+  <p class="foot-meta">
+    <span>© 2026 Younes Essafouri</span>
+    <span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0v4M6 8v4M0 6h4M8 6h4" stroke="#e0532a" stroke-width="1.3"/></svg>Toulouse · 43.60° N 1.44° E</span>
+  </p>
 </footer>
 
-<script src="js/site.js?v=20260924" defer></script>
-<script src="js/field.js?v=20260924" defer></script>
+<script src="js/site.js?v=20260925" defer></script>
+<script src="js/field.js?v=20260925" defer></script>
 </body>
 </html>
