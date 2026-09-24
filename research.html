@@ -1,138 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Research — Younes Essafouri</title>
-<meta name="description" content="Explainable AI for numerical weather prediction — attribution methods that trace a deep forecast back to the atmospheric fields that produced it.">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230a0d15%22/%3E%3Cpath%20d%3D%22M4%2012c4%200%204%203%208%203s4-3%208-3%204%203%208%203%22%20stroke%3D%22%236fe3c4%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M4%2020c4%200%204%203%208%203s4-3%208-3%204%203%208%203%22%20stroke%3D%22%235aa9ff%22%20stroke-width%3D%222%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E">
-<link rel="stylesheet" href="css/style.css?v=20260831">
+<meta name="description" content="Explainable AI for neural weather forecasting: attribution methods that trace a forecast back to the atmospheric fields behind it, and tests of whether those explanations can be trusted.">
+<meta name="theme-color" content="#f5f2ea">
+<link rel="preload" href="fonts/newsreader-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/style.css?v=20260924">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f5f2ea'/%3E%3Cpath d='M3 12c5-5 9 4 14-1s8-4 12-2M3 20c5-4 9 3 14-1s8-3 12-1' fill='none' stroke='%233b7980' stroke-width='1.6'/%3E%3Crect x='18.5' y='13.5' width='6' height='6' fill='none' stroke='%23d95a22' stroke-width='1.8'/%3E%3C/svg%3E">
+<script>document.documentElement.classList.add("js");</script>
 </head>
-<body id="top">
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<nav class="site-nav">
-  <div class="container">
-    <a href="index.html" class="brand"><span class="brand-mark">//</span> Younes Essafouri</a>
-    <div class="nav-links">
-      <a class="nav-link" href="index.html">Home</a>
-      <a class="nav-link" href="research.html">Research</a>
-      <a class="nav-link" href="publications.html">Publications</a>
-      <a class="nav-link" href="index.html#personal">Beyond the Lab</a>
-      <a class="nav-link" href="index.html#contact">Contact</a>
-    </div>
-    <div class="nav-actions">
-      <button class="icon-btn" data-theme-toggle aria-pressed="false" aria-label="Toggle light/dark theme" title="Toggle theme">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.6M12 18.9v2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12h2.6M18.9 12h2.6M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
-      </button>
-      <button class="icon-btn mobile-menu-btn" data-mobile-toggle aria-label="Toggle menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-      </button>
-    </div>
-  </div>
-</nav>
+<header class="site-head wrap">
+  <a class="site-mark" href="./">Younes Essafouri<span>Toulouse · 43.60° N 1.44° E</span></a>
+  <nav class="site-nav" aria-label="Primary">
+    <ul>
+      <li><a href="research.html" aria-current="page">Research</a></li>
+      <li><a href="publications.html">Publications</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="assets/YounesEssafouri_CV.pdf">CV</a></li>
+    </ul>
+  </nav>
+</header>
 
-<header style="padding: 150px 0 70px; border-bottom: 1px solid var(--rule-soft);">
-  <div class="container" style="max-width: 880px;">
-    <div class="eyebrow"><span class="dot"></span> Research</div>
-    <h1 style="font-size: clamp(36px,5.4vw,64px); font-weight: 400; margin-bottom: 24px;">Can a weather model's reasoning survive a second opinion?</h1>
-    <p style="font-size: 18px; line-height: 1.6; max-width: 680px; color: var(--ink-soft);">Deep learning forecasters now rival or beat classical numerical weather prediction on many metrics — but their internal reasoning is opaque. My PhD builds attribution methods that trace a forecast back to the input fields that produced it, so operational meteorologists can tell physically grounded reasoning from spurious correlation.</p>
+<main id="main">
+
+<header class="page-head wrap grid">
+  <p class="sect-mark" data-n="§">Research</p>
+  <h1 class="page-title">Reading neural weather forecasts <em>backwards</em>.</h1>
+  <div class="page-intro">
+    <p>Data-driven models now match or beat numerical weather prediction on many scores, at a fraction of the cost. But when one of them predicts heavy rain over Paris, a forecaster has no way to ask what in the current state of the atmosphere made it say so.</p>
+    <p>My PhD at the Institut de Mathématiques de Toulouse builds attribution methods for these models: tools that trace a forecast back to the input fields that produced it, so that physically grounded reasoning can be told apart from spurious correlation, and read like a weather chart.</p>
   </div>
 </header>
 
-<section id="projects">
-  <div class="container">
-    <div class="section-head reveal">
-      <div class="eyebrow"><span class="dot"></span> Selected work</div>
-      <h2>Projects</h2>
-      <p>The PhD research sits alongside earlier work spanning physics-informed ML, neural operators, NLP, and numerical methods.</p>
-    </div>
-    <div class="reveal">
-      <div class="project-row">
-        <div class="pr-id">01</div>
-        <div>
-          <h3>Explaining Neural Weather Models</h3>
-          <div class="pr-sub">PhD research — Institut de Mathématiques de Toulouse</div>
-          <p class="pr-desc">A framework that interrogates deep forecasting models by tracing the influence of input fields — geopotential, humidity, wind — onto the variables they predict. The goal: separate real physical reasoning from spurious correlation, and make the result legible to an operational meteorologist.</p>
-          <div class="pr-tags"><span class="tag tag-accent">XAI</span><span class="tag">PyTorch</span><span class="tag">ERA5</span><span class="tag">Attribution</span></div>
-        </div>
-        <div class="pr-year">2025 — present</div>
-      </div>
-      <div class="project-row">
-        <div class="pr-id">02</div>
-        <div>
-          <h3>Physics-Informed ML for Cardiac Modelling</h3>
-          <div class="pr-sub">Research internship at Dassault Systèmes</div>
-          <p class="pr-desc">Investigated physics-informed machine learning methods for cardiac physics modelling, combining differential-equation priors with data-driven surrogates.</p>
-          <div class="pr-tags"><span class="tag">PINN</span><span class="tag">Cardiac</span><span class="tag">Simulation</span></div>
-        </div>
-        <div class="pr-year">Feb — Aug 2025</div>
-      </div>
-      <div class="project-row">
-        <div class="pr-id">03</div>
-        <div>
-          <h3>Neural Operators for Kuramoto–Sivashinsky</h3>
-          <div class="pr-sub">Hubert Curien laboratory</div>
-          <p class="pr-desc">Developed physics-informed neural networks as surrogates for expensive numerical solvers of the Kuramoto–Sivashinsky equations, and explored Fourier Neural Operators (FNOs) for efficient spatial-temporal modelling on continuous domains.</p>
-          <div class="pr-tags"><span class="tag">PINN</span><span class="tag">FNO</span><span class="tag">PDE</span></div>
-        </div>
-        <div class="pr-year">Jun — Aug 2024</div>
-      </div>
-      <div class="project-row">
-        <div class="pr-id">04</div>
-        <div>
-          <h3>Embedded Topic Modelling</h3>
-          <div class="pr-sub">Reproducing Dieng et al. (ICML 2019)</div>
-          <p class="pr-desc">Implemented the Embedded Topic Model from scratch and ran a comparative analysis against Latent Dirichlet Allocation on the 20 Newsgroups dataset, evaluating interpretability and topic coherence.</p>
-          <div class="pr-tags"><span class="tag">NLP</span><span class="tag">PyTorch</span><span class="tag">Topic Models</span></div>
-        </div>
-        <div class="pr-year">Nov — Dec 2024</div>
-      </div>
-      <div class="project-row">
-        <div class="pr-id">05</div>
-        <div>
-          <h3>Neural Networks for Finance PDEs</h3>
-          <div class="pr-sub">Black–Scholes via the Feynman–Kac method</div>
-          <p class="pr-desc">Used neural networks and the Feynman–Kac method to numerically solve the Black–Scholes equation and price call options, exploring how deep learning can stand in for classical PDE solvers.</p>
-          <div class="pr-tags"><span class="tag">PDE</span><span class="tag">Finance</span><span class="tag">TensorFlow</span></div>
-        </div>
-        <div class="pr-year">Feb — May 2024</div>
-      </div>
-      <div class="project-row">
-        <div class="pr-id">06</div>
-        <div>
-          <h3>Deca Compiler &amp; Math Library</h3>
-          <div class="pr-sub">Software engineering project</div>
-          <p class="pr-desc">A Java-based compiler for Deca, an object-oriented sub-language of Java, together with a small math library for accurate trigonometric functions written in Deca.</p>
-          <div class="pr-tags"><span class="tag">Java</span><span class="tag">ANTLR</span><span class="tag">Compilers</span></div>
-        </div>
-        <div class="pr-year">Dec 2023 — Jan 2024</div>
+<section class="wrap grid" aria-label="Figure: a local explanation">
+  <figure class="pipeline" data-reveal style="margin-top:0">
+    <div class="pipeline-scroll" tabindex="0" role="group" aria-label="Figure 1, scrollable">
+      <div class="pipeline-inner">
+        <ol class="pipeline-steps">
+          <li><span class="n">01 · Input</span><span class="d">zonal wind, 250 hPa, t</span></li>
+          <li><span class="n">02 · Forecast</span><span class="d">rain at t&nbsp;+&nbsp;5, target box □ Paris</span></li>
+          <li><span class="n">03 · Explanation</span><span class="d">G = ∂ target / ∂ input</span></li>
+        </ol>
+        <img src="assets/work/pipeline.webp" width="1395" height="380" loading="lazy" decoding="async"
+             alt="Three maps of France. Left: zonal wind at 250 hPa at time t. Middle: the model's precipitation forecast five steps later, with a target box over Paris. Right: the gradient of rain in that box with respect to the input wind, concentrated upstream over Brittany and the Atlantic coast.">
       </div>
     </div>
+    <p class="scroll-hint" aria-hidden="true">← drag to see the whole figure →</p>
+    <figcaption><span class="fig-n">Fig. 1</span>Every explanation here is one number’s sensitivity to one field: pick an input variable, pick a forecast variable, reduce the forecast over a region to a scalar, and differentiate through the model.</figcaption>
+  </figure>
+</section>
+
+<section class="block wrap grid" aria-labelledby="tests-h">
+  <h2 class="label" id="tests-h">Three tests for an explanation</h2>
+  <div class="block-body">
+    <ul class="criteria">
+      <li>
+        <h3>Faithful</h3>
+        <p>It should reflect what the model actually computes: hiding the regions it points to should change the forecast more than hiding random ones.</p>
+      </li>
+      <li>
+        <h3>Stable</h3>
+        <p>A tiny perturbation of the input barely changes the forecast. It should not send the explanation across the map.</p>
+      </li>
+      <li>
+        <h3>Physical</h3>
+        <p>It should agree with how the atmosphere works: influence coming from upstream, at plausible distances, differently at each level.</p>
+      </li>
+    </ul>
   </div>
 </section>
 
-<section style="border-bottom: none; padding-bottom: 90px;">
-  <div class="container">
-    <div class="reveal" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-      <div>
-        <h2 style="font-size: clamp(24px,3vw,32px); margin-bottom: 10px;">Read the publications</h2>
-        <p style="font-size: 15px;">Full citations for the WassersteinGrad preprint and EGU 2026 poster.</p>
-      </div>
-      <a href="publications.html" class="btn-pri">Publications →</a>
-    </div>
+<section class="block wrap grid" aria-labelledby="why-h">
+  <h2 class="label" id="why-h">Why weather is a hard case</h2>
+  <div class="block-body narrow prose">
+    <p>Gradient attribution methods were designed for photographs: a static image on a pixel grid. The atmosphere is a continuous, advective, physically constrained field, and modern models forecast it <strong>autoregressively</strong>, feeding each prediction back in as the next input. Gradients travel back through every one of those steps, and whatever distortion each step adds accumulates.</p>
+    <p>The data are kilometre-scale too. The WassersteinGrad experiments use TITAN, derived from Météo-France’s operational AROME model: a 512 × 640 grid over France at about 2.5 km, with 21 surface and upper-air channels.</p>
   </div>
 </section>
 
-<footer class="site-footer">
-  <div class="container">
-    <span>© 2026 Younes Essafouri · Toulouse, France</span>
-    <span>Built with contour lines &amp; gradients</span>
+<section class="block wrap grid" aria-labelledby="so-far-h">
+  <h2 class="label" id="so-far-h">Work so far</h2>
+  <div class="block-body">
+    <ul class="rows">
+      <li>
+        <span class="when">2026 · preprint</span>
+        <div>
+          <h3>WassersteinGrad: explaining dynamic physical field predictions</h3>
+          <p>Input noise doesn’t blur gradient explanations of a weather model; it displaces them. Averaging the perturbed explanations with optimal transport recovers one coherent region of influence.</p>
+          <ul class="links" style="margin-top:12px">
+            <li><a href="publications.html#wassersteingrad">Publication</a></li>
+            <li><a href="https://arxiv.org/abs/2604.22580">arXiv</a></li>
+            <li><a href="https://younesessafouri.github.io/WassersteinGrad/">Project page</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <span class="when">2026 · EGU</span>
+        <div>
+          <h3>A framework for diagnosing neural weather models with gradient attributions</h3>
+          <p>Attribution maps summarised by a barycenter and a 95 % influence ellipse, compared across pressure levels.</p>
+          <ul class="links" style="margin-top:12px">
+            <li><a href="publications.html#egu26">Publication</a></li>
+            <li><a href="https://doi.org/10.5194/egusphere-egu26-4039">DOI</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
   </div>
+</section>
+
+<section class="block wrap grid" aria-labelledby="before-h">
+  <h2 class="label" id="before-h">Before the PhD</h2>
+  <div class="block-body">
+    <ul class="rows">
+      <li>
+        <span class="when">Feb – Aug 2025</span>
+        <div>
+          <h3>Physics-informed machine learning for cardiac modelling</h3>
+          <p class="where">Research internship, Dassault Systèmes</p>
+          <p>Physics-informed methods for cardiac physics, combining differential-equation priors with data-driven surrogates.</p>
+        </div>
+      </li>
+      <li>
+        <span class="when">Nov – Dec 2024</span>
+        <div>
+          <h3>Embedded topic modelling</h3>
+          <p class="where">Reproducing Dieng et al., ICML 2019</p>
+          <p>The Embedded Topic Model implemented from scratch and compared with Latent Dirichlet Allocation on 20 Newsgroups, for coherence and interpretability.</p>
+        </div>
+      </li>
+      <li>
+        <span class="when">Jun – Aug 2024</span>
+        <div>
+          <h3>Neural operators for the Kuramoto–Sivashinsky equation</h3>
+          <p class="where">Research internship, Laboratoire Hubert Curien</p>
+          <p>Physics-informed networks as surrogates for expensive numerical solvers, and Fourier Neural Operators for spatio-temporal modelling on continuous domains.</p>
+        </div>
+      </li>
+      <li>
+        <span class="when">Feb – May 2024</span>
+        <div>
+          <h3>Neural networks for finance PDEs</h3>
+          <p class="where">Black–Scholes via the Feynman–Kac method</p>
+          <p>Neural networks standing in for classical PDE solvers to price call options numerically.</p>
+        </div>
+      </li>
+      <li>
+        <span class="when">Dec 2023 – Jan 2024</span>
+        <div>
+          <h3>Deca compiler and maths library</h3>
+          <p class="where">Software engineering project, Ensimag</p>
+          <p>A Java compiler for Deca, an object-oriented subset of Java, with a library for accurate trigonometric functions written in Deca.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot wrap">
+  <span>© 2026 Younes Essafouri</span>
+  <span><a href="mailto:younes.essafouri@math.univ-toulouse.fr">younes.essafouri@math.univ-toulouse.fr</a></span>
 </footer>
 
-<script src="js/main.js?v=20260831"></script>
+<script src="js/site.js?v=20260924" defer></script>
 </body>
 </html>
