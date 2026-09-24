@@ -61,7 +61,7 @@ C.2/E.2 of the paper, or the slides — no numbers are estimated off a plot.
 - **Code link.** Currently points at upstream `meteofrance/py4cast`. The slides
   mention `py4cast-xai` and `anemoi-plugins-xai`; swap the hero and footer links
   once those are public.
-- **Venue.** The badge reads *Preprint · Under review*. Update on acceptance.
+- **Venue.** The badge reads *NeurIPS 2026*; add the proceedings link once it is online.
 
 ## Assets that would improve the page
 
