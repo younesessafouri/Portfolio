@@ -148,6 +148,70 @@
     });
   }
 
+  /* ---------- teaching: one tick per hour, in two-hour sessions ---------- */
+  $$("[data-hours]").forEach(function (el) {
+    var n = parseInt(el.getAttribute("data-hours"), 10), rug = el.querySelector(".tt-rug");
+    if (!rug || !(n > 0)) return;
+    for (var h = 0; h < n; h += 2) {
+      var s = document.createElement("span");
+      s.innerHTML = h + 1 < n ? "<i></i><i></i>" : "<i></i>";
+      rug.appendChild(s);
+    }
+  });
+
+  /* ---------- the path: scroll moves a cursor through the stages ---------- */
+  var path = document.querySelector("[data-path]");
+  if (path) {
+    var stages = $$(".stage", path);
+    var NOW = 2026.73, N = stages.length;
+    var wide = window.matchMedia("(min-width: 700px)");
+    var span = function (k) {
+      var a = parseFloat(stages[k].getAttribute("data-a"));
+      var end = k < N - 1 ? Math.min(parseFloat(stages[k].getAttribute("data-b")), parseFloat(stages[k + 1].getAttribute("data-a"))) : NOW;
+      return [a, end];
+    };
+    var pathQueued = false;
+    var progress = function () {
+      pathQueued = false;
+      if (!path.classList.contains("is-scrolly")) return;
+      var r = path.getBoundingClientRect(), total = r.height - window.innerHeight;
+      var p = Math.max(0, Math.min(0.9999, -r.top / Math.max(1, total)));
+      var k = Math.floor(p * N), f = p * N - k, s = span(k);
+      path.style.setProperty("--cursor", (s[0] + (s[1] - s[0]) * f).toFixed(3));
+      stages.forEach(function (st, i) {
+        st.classList.toggle("is-active", i === k);
+        st.classList.toggle("is-past", i < k);
+      });
+    };
+    var mode = function () {
+      var on = wide.matches && !reduce;
+      path.classList.toggle("is-scrolly", on);
+      if (!on) stages.forEach(function (st) { st.classList.remove("is-active", "is-past"); });
+      progress();
+    };
+    // clicking a bar scrolls to its stage
+    stages.forEach(function (st, i) {
+      st.querySelector(".stage-bar").addEventListener("click", function () {
+        if (!path.classList.contains("is-scrolly")) return;
+        var top = path.getBoundingClientRect().top + window.scrollY;
+        var total = path.offsetHeight - window.innerHeight;
+        window.scrollTo({ top: top + (i + 0.5) / N * total, behavior: reduce ? "auto" : "smooth" });
+      });
+    });
+    window.addEventListener("scroll", function () { if (!pathQueued) { pathQueued = true; requestAnimationFrame(progress); } }, { passive: true });
+    window.addEventListener("resize", progress);
+    if (wide.addEventListener) wide.addEventListener("change", mode); else if (wide.addListener) wide.addListener(mode);
+    mode();
+
+    // on phones: each stage arrives as it scrolls into view
+    if ("IntersectionObserver" in window) {
+      var seen = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("is-in"); seen.unobserve(en.target); } });
+      }, { rootMargin: "0px 0px -12% 0px" });
+      stages.forEach(function (st) { seen.observe(st); });
+    } else stages.forEach(function (st) { st.classList.add("is-in"); });
+  }
+
   /* ---------- copy BibTeX ---------- */
   $$("[data-copy]").forEach(function (btn) {
     var src = document.getElementById(btn.getAttribute("data-copy"));

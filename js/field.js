@@ -84,21 +84,18 @@
   function LAT(y) { return V.lat0 - (y - V.h / 2) / V.s; }
 
   /* ---------- the field: 500 hPa geopotential height (m) ----------
-     South-westerly flow ahead of an Atlantic trough, a ridge over the
-     western Mediterranean, a short wave. Lh is the forecast lead in hours. */
+     A mid-latitude pattern: westerlies from the Atlantic, a trough to the
+     north-west and a subtropical ridge to the south-east, both drifting east,
+     and a short wave travelling east in between. Lh is the forecast lead in
+     hours. Winds come out mostly from the west-south-west at 20–35 m/s,
+     so an explanation traced upstream from Toulouse heads for the Atlantic. */
   function Z(lon, lat, Lh) {
-    var z = 5650 - 18 * (lat - 45);
-    // a cut-off low west of Iberia, drifting north-east
-    var dx = (lon - (-11 + 0.06 * Lh)) * KX, dy = lat - (40 + 0.03 * Lh);
-    z -= 110 * Math.exp(-(dx * dx + dy * dy) / 22);
-    // the parent trough over the Atlantic
-    dx = (lon - (-16 + 0.1 * Lh)) * KX; dy = lat - 49;
-    z -= 90 * Math.exp(-(dx * dx) / 50 - (dy * dy) / 32);
-    // a ridge over the western Mediterranean
-    dx = (lon - (8 + 0.04 * Lh)) * KX; dy = lat - 41;
-    z += 80 * Math.exp(-(dx * dx + dy * dy) / 50);
-    // a short wave in the westerlies
-    z += 14 * Math.sin((lon - 0.15 * Lh) * 0.4 + lat * 0.15) * Math.exp(-(lat - 45) * (lat - 45) / 60);
+    var z = 5640 - 24 * (lat - 45);
+    var dx = (lon - (-15 + 0.12 * Lh)) * KX, dy = lat - (49.5 - 0.02 * Lh);
+    z -= 130 * Math.exp(-(dx * dx) / 60 - (dy * dy) / 30);
+    dx = (lon - (11 + 0.06 * Lh)) * KX; dy = lat - 38.5;
+    z += 70 * Math.exp(-(dx * dx + dy * dy) / 60);
+    z += 16 * Math.sin((lon - 0.3 * Lh) * 0.42 + 0.9) * Math.exp(-(lat - 45) * (lat - 45) / 40);
     return z;
   }
   var GF = 9.81 / 1.03e-4, M_PER_DEG = 111000;
@@ -342,7 +339,7 @@
   }
 
   /* ---------- wind trails ---------- */
-  var K_SPEED = 1.05;                          // px per second per m/s
+  var K_SPEED = 0.9;                           // px per second per m/s
   function stepFlows(dt) {
     var Lh = S.fieldLead;
     for (var i = 0; i < flows.length; i++) {
@@ -402,7 +399,7 @@
      For n steps: release the cloud at the target at lead 6n h, carry it
      backwards through the time-dependent flow to the input time, with a little
      diffusion. Record the cloud after every step. */
-  var BACK = 0.14;                             // schematic: how far upstream an hour reaches
+  var BACK = 0.11;                             // schematic: how far upstream an hour reaches
   var VEER = 30 * DEG;                         // near the surface, wind turns towards low pressure
   function explain(n) {
     var key = n;
