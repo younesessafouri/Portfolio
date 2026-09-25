@@ -8,24 +8,22 @@ python3 -m http.server 8000   # then open http://localhost:8000
 
 ## Structure
 
-One page, `index.html`: identity over Fig. 0, then Research, Publications and
-About as sections, reached from the fixed navigation (`#research`,
-`#publications`, `#about`). `research.html` and `publications.html` only
-redirect to those sections, so old links keep working. The CV stays a PDF, and
-`wassersteingrad/` is the paper's stand-alone project page.
+One page, `index.html`, reached from the fixed navigation:
 
-The About section:
+- **Hero**: name, field, a one-sentence introduction, over Fig. 0.
+- **Publications** (`#publications`): the list, with abstract and BibTeX panels.
+- **Talks & Teaching** (`#talks`): the seminar talk and the teaching. Adding
+  `data-hours="N"` to the teaching item draws one tick per hour under its title.
+- **About** (`#about`): what the research is about, in plain words, then the
+  **Path**, then life off the clock (photographs + atlas, books, records).
 
-- **Photographs** in an asymmetric grid, linked to a small atlas: hovering a
-  photo lights up where it was taken (and the reverse). On phones it becomes a
-  swipeable strip and the atlas follows. Captions are coordinates and capture
-  times from the photos' EXIF data.
-- **Reading**: a shelf of spines; hovering one shows the author's details.
-- **Music**: a record (grooves drawn as contour-like rings) and a short
-  "on rotation" list with waveforms. Choosing a record turns the disc and
-  sweeps the waveform. There is no audio.
-- **Path**: education, research and teaching on one time axis, with a "now"
-  marker. The PhD bar is solid up to today and dotted beyond, like a forecast.
+`research.html` and `publications.html` only redirect to their sections. The CV
+stays a PDF, and `wassersteingrad/` is the paper's stand-alone project page.
+
+The Path is a time axis of the research stages. On wide screens it is
+scroll-driven: the section stays in place while a cursor moves through the
+stages, and each stage's sentence appears under its bar. On phones it becomes a
+vertical timeline; with reduced motion, a static axis with the list below.
 
 ## Visual system
 
@@ -43,7 +41,12 @@ Type: Newsreader (display serif), Instrument Sans (text), IBM Plex Mono
 
 The hero is drawn on a canvas: an analytic 500 hPa field over south-western
 Europe (a wash, smoothed marching-squares contours, wind trails following its
-geostrophic flow) and a crosshair over Toulouse.
+geostrophic flow) and a crosshair over Toulouse. The pattern is a plain
+mid-latitude one: westerlies from the Atlantic, a trough to the north-west and a
+subtropical ridge to the south-east, both drifting east with lead time, and a
+short wave travelling east. Winds come mostly from the west-south-west at
+20–35 m/s, and flow around lows and highs turns the right way for the northern
+hemisphere.
 
 The explanation is computed rather than drawn. A cloud of particles, one per
 level of the column, is released at the target and carried backwards through
@@ -67,5 +70,6 @@ off-screen, and under `prefers-reduced-motion` it draws a single still.
   SVG. The originals in `photos/` are no longer referenced.
 - **Books / records:** each spine is an `<li class="book">` (height, width and
   colour are inline custom properties); each record is a `<button data-track>`.
-- **Path:** each bar is an `<li>` with `--a` / `--b` as decimal years.
+- **Path:** each stage is an `<li class="stage">` with `--a` / `--b` (and
+  `data-a` / `data-b`) as decimal years, a lane, a short bar label and one sentence.
 - **CV:** replace `assets/YounesEssafouri_CV.pdf`.

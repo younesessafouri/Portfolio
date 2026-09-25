@@ -42,8 +42,8 @@
   <div class="wrap topnav-inner">
   <a class="topnav-name" href="#top">Younes Essafouri</a>
   <ul>
-    <li><a href="#research">Research</a></li>
     <li><a href="#publications">Publications</a></li>
+    <li><a href="#talks">Talks &amp; Teaching</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="assets/YounesEssafouri_CV.pdf">CV</a></li>
   </ul>
@@ -53,7 +53,7 @@
 <header class="hero" data-field>
   <div class="field-stage">
     <noscript><img class="field-poster" src="assets/work/fig0.webp" alt=""></noscript>
-    <canvas role="img" aria-label="Schematic weather map of south-western Europe: contours and wind of the 500 hPa field flowing from the south-west, a crosshair over Toulouse, and a blue explanation region that grows upstream over Spain and the Atlantic as the forecast lead time increases."></canvas>
+    <canvas role="img" aria-label="Schematic weather map of south-western Europe: contours and wind of the 500 hPa field flowing in from the Atlantic, a crosshair over Toulouse, and a blue explanation region that reaches further upstream, towards the Bay of Biscay, as the forecast lead time increases."></canvas>
   </div>
 
   <div class="hero-id wrap">
@@ -63,7 +63,7 @@
       <p class="hero-field">Explainable AI for Weather Forecasting</p>
     </div>
     <div class="hero-text">
-      <p class="hero-lede">I study what neural weather models rely on to make a forecast, and whether it makes physical sense.</p>
+      <p class="hero-intro">I’m a PhD researcher in Toulouse, and I read weather forecasts <em>backwards</em>: from the rain a neural network predicts to the air it relied on, and whether the physics agrees.</p>
       <ul class="links" aria-label="Elsewhere online">
         <li><a href="https://scholar.google.com/citations?user=xJJI31wAAAAJ&amp;hl=en" rel="me">Scholar</a></li>
         <li><a href="https://github.com/YounesEssafouri" rel="me">GitHub</a></li>
@@ -93,23 +93,6 @@
 <main id="main">
 
 <div class="flow wrap">
-
-  <!-- ============================================================ RESEARCH -->
-  <section class="flow-row" id="research" aria-labelledby="research-h">
-    <h2 class="label" id="research-h">Research</h2>
-    <div>
-      <p class="statement">Neural networks now forecast the weather as well as physics-based models, but they don’t say why. <span>I build attribution methods that trace a forecast back to the fields behind it, and test whether the answer is faithful, stable and physically plausible.</span></p>
-      <figure class="pipeline">
-        <div class="pipeline-scroll" tabindex="0" role="group" aria-label="Figure, scrollable">
-          <div class="pipeline-inner">
-            <img src="assets/work/pipeline.webp" width="1395" height="380" loading="lazy" decoding="async"
-                 alt="Three maps of France. Left: zonal wind at 250 hPa at time t. Middle: the model's rain forecast five steps later, with a target box over Paris. Right: the gradient of rain in that box with respect to the input wind, concentrated upstream over Brittany and the Atlantic coast.">
-          </div>
-        </div>
-        <figcaption>Input wind at 250 hPa, the rain forecast five steps later, and the sensitivity of rain in the target box to every point of the input. From the WassersteinGrad paper.</figcaption>
-      </figure>
-    </div>
-  </section>
 
   <!-- ======================================================== PUBLICATIONS -->
   <section class="flow-row pubs" id="publications" aria-labelledby="pubs-h">
@@ -171,15 +154,27 @@
           </div>
         </div>
       </li>
-      <li class="pub is-talk">
-        <p class="pub-venue">Talk · 2026</p>
-        <div>
-          <h3 class="pub-title">Explainable AI for Data-Driven Weather Forecasting</h3>
-          <p class="pub-meta">Doctoral seminar, Stat&amp;Opt team, Institut de Mathématiques de Toulouse</p>
-        </div>
-      </li>
     </ol>
     <p class="pubs-more"><a class="text-link" href="https://scholar.google.com/citations?user=xJJI31wAAAAJ&amp;hl=en">Full list on Google Scholar</a></p>
+  </section>
+
+  <!-- ==================================================== TALKS & TEACHING -->
+  <section class="flow-row" id="talks" aria-labelledby="talks-h">
+    <h2 class="label" id="talks-h">Talks &amp; Teaching</h2>
+    <div class="tt">
+      <article class="tt-item">
+        <p class="tt-kind">Talk · 2026</p>
+        <h3 class="tt-title">Explainable AI for Data-Driven Weather Forecasting</h3>
+        <p class="tt-where">Doctoral seminar of the Stat&amp;Opt team, Institut de Mathématiques de Toulouse</p>
+      </article>
+      <!-- To show teaching hours: add data-hours="N" here (one tick per hour is drawn below the title) -->
+      <article class="tt-item tt-teach">
+        <p class="tt-kind">Teaching · 2025–26</p>
+        <h3 class="tt-title">Linear models and statistical inference</h3>
+        <div class="tt-rug" aria-hidden="true"></div>
+        <p class="tt-where">Practicals for students at Université Paul Sabatier, from least squares in R to confidence intervals.</p>
+      </article>
+    </div>
   </section>
 
 </div>
@@ -190,8 +185,67 @@
 
     <div class="flow-row about-head">
       <h2 class="label" id="about-h">About</h2>
-      <p class="about-line">Off the clock I take photographs, read the novel before the film, and play records that never left the twentieth century.</p>
+      <div class="about-intro">
+        <p class="about-lead">Neural networks now forecast the weather about as well as the physics-based models they learned from. I try to understand <mark>how they use physical information</mark>: which parts of the atmosphere a forecast relies on, how that influence travels from one forecast step to the next, and whether it makes physical sense.</p>
+        <p class="about-context">PhD in explainable AI for weather forecasting at the Institut de Mathématiques de Toulouse, since 2025, with researchers at Météo-France and Cerfacs and support from ANITI. Before that, applied mathematics and scientific machine learning.</p>
+      </div>
     </div>
+
+    <!-- the path so far: scroll moves a cursor through the stages -->
+    <figure class="path" data-path aria-labelledby="path-h">
+      <div class="path-sticky">
+        <p class="label" id="path-h">Path</p>
+        <div class="path-axis">
+          <ol class="path-years" aria-hidden="true"><li>2022</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li></ol>
+          <span class="path-now" aria-hidden="true">now</span>
+          <span class="path-cursor" aria-hidden="true"></span>
+          <ol class="path-stages">
+          <li class="stage" style="--a: 2022.65; --b: 2025.6; --lane: 0" data-a="2022.65" data-b="2025.6">
+            <button type="button" class="stage-bar" tabindex="-1" aria-hidden="true"><span>Ensimag</span></button>
+            <div class="stage-copy">
+              <p class="stage-when">2022 – 2025</p>
+              <h3 class="stage-name">Grenoble INP – Ensimag</h3>
+              <p class="stage-text">Studied applied mathematics and computer science, from numerical solvers for PDEs to statistical learning.</p>
+            </div>
+          </li>
+          <li class="stage" style="--a: 2024.42; --b: 2024.65; --lane: 1" data-a="2024.42" data-b="2024.65">
+            <button type="button" class="stage-bar" tabindex="-1" aria-hidden="true"><span>Hubert Curien</span></button>
+            <div class="stage-copy">
+              <p class="stage-when">Summer 2024</p>
+              <h3 class="stage-name">Laboratoire Hubert Curien</h3>
+              <p class="stage-text">Replaced an expensive solver for the Kuramoto–Sivashinsky equation with physics-informed networks and Fourier neural operators.</p>
+            </div>
+          </li>
+          <li class="stage" style="--a: 2024.6; --b: 2025.05; --lane: 2" data-a="2024.6" data-b="2025.05">
+            <button type="button" class="stage-bar" tabindex="-1" aria-hidden="true"><span>KTH</span></button>
+            <div class="stage-copy">
+              <p class="stage-when">2024 – 2025</p>
+              <h3 class="stage-name">KTH, Stockholm</h3>
+              <p class="stage-text">Studied machine learning and worked on physics-informed models for fluid dynamics with the KTH AI Society.</p>
+            </div>
+          </li>
+          <li class="stage" style="--a: 2025.1; --b: 2025.62; --lane: 1" data-a="2025.1" data-b="2025.62">
+            <button type="button" class="stage-bar" tabindex="-1" aria-hidden="true"><span>Dassault Systèmes</span></button>
+            <div class="stage-copy">
+              <p class="stage-when">2025</p>
+              <h3 class="stage-name">Dassault Systèmes</h3>
+              <p class="stage-text">Developed physics-informed graph neural network surrogates for cardiac heat-transfer simulations.</p>
+            </div>
+          </li>
+          <li class="stage is-phd" style="--a: 2025.75; --b: 2028.75; --lane: 0" data-a="2025.75" data-b="2028.75">
+            <button type="button" class="stage-bar" tabindex="-1" aria-hidden="true"><span>PhD · IMT</span></button>
+            <div class="stage-copy">
+              <p class="stage-when">2025 – now</p>
+              <h3 class="stage-name">PhD · Institut de Mathématiques de Toulouse</h3>
+              <p class="stage-text">Opening up neural weather models: which parts of the atmosphere a forecast relies on, and whether that makes physical sense.</p>
+            </div>
+          </li>
+          </ol>
+        </div>
+      </div>
+    </figure>
+
+    <p class="about-line">Off the clock I take photographs, read the novel before the film, and play records that never left the twentieth century.</p>
 
     <!-- photographs, and where they were taken -->
     <div class="notes">
@@ -271,30 +325,6 @@
       </figure>
     </div>
 
-    <!-- the path so far, on one axis -->
-    <figure class="path" aria-labelledby="path-h">
-      <p class="label" id="path-h">Path</p>
-      <div class="path-scroll" tabindex="0" role="group" aria-label="Timeline, scrollable">
-        <div class="path-axis">
-          <ol class="path-years" aria-hidden="true"><li>2020</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li></ol>
-          <ul class="path-lane">
-            <li style="--a: 2020.7; --b: 2022.5">Classes préparatoires <span class="visually-hidden">2020 to 2022</span></li>
-            <li style="--a: 2022.65; --b: 2025.6">Grenoble INP – Ensimag <span class="visually-hidden">2022 to 2025</span></li>
-            <li class="is-now" style="--a: 2025.75; --b: 2028.75">PhD · Institut de Mathématiques de Toulouse <span class="visually-hidden">2025 to 2028</span></li>
-          </ul>
-          <ul class="path-lane path-lane--minor">
-            <li style="--a: 2024.6; --b: 2025.05">KTH <span class="visually-hidden">exchange, Stockholm, 2024 to 2025</span></li>
-            <li style="--a: 2025.1; --b: 2025.62">Dassault Systèmes <span class="visually-hidden">research internship, 2025</span></li>
-          </ul>
-          <ul class="path-lane path-lane--minor">
-            <li style="--a: 2024.42; --b: 2024.65">Hubert Curien <span class="visually-hidden">research internship, 2024</span></li>
-            <li style="--a: 2025.75; --b: 2026.5">Teaching · Paul Sabatier <span class="visually-hidden">statistics practicals, 2025 to 2026</span></li>
-          </ul>
-          <span class="path-now" style="--a: 2026.73" aria-hidden="true">now</span>
-        </div>
-      </div>
-      <figcaption>Arabic · French · English</figcaption>
-    </figure>
 
   </div>
 </section>

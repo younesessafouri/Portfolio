@@ -135,7 +135,12 @@ ul, ol { padding: 0; list-style: none; }
   margin-top: clamp(20px, 3vh, 30px);
   font-weight: 500; font-size: clamp(1.25rem, 1.8vw, 1.75rem); line-height: 1.15; letter-spacing: -0.012em;
 }
-.hero-lede { margin-top: 14px; max-width: 33ch; color: var(--ink-2); font-size: clamp(1rem, 1.1vw, 1.1rem); }
+.hero-intro {
+  margin-top: 18px; max-width: 36ch;
+  font-family: var(--serif); font-size: clamp(1.12rem, 1.42vw, 1.38rem); line-height: 1.38; color: var(--ink-2);
+  text-wrap: pretty;
+}
+.hero-intro em, .about-lead mark { font-style: italic; color: var(--xai); background: none; }
 .hero-id .links { margin-top: clamp(24px, 4vh, 40px); }
 
 /* the few controls, bottom-right, over the field */
@@ -242,12 +247,6 @@ html:not(.js) .field-ui .toggle, html:not(.js) .field-ui .lead, html:not(.js) .f
 .foot-meta a { text-decoration: none; }
 .foot-meta a:hover { color: var(--xai); }
 
-.pipeline { margin-top: clamp(32px, 4vw, 52px); }
-.pipeline-scroll { overflow-x: auto; }
-.pipeline-inner { min-width: 720px; }
-.pipeline img { width: 100%; mix-blend-mode: multiply; }
-.pipeline figcaption { margin-top: 12px; font-size: 13.5px; color: var(--ink-2); max-width: 76ch; }
-
 .bib { margin-top: 14px; position: relative; }
 .bib-copy {
   position: absolute; top: 8px; right: 8px; cursor: pointer;
@@ -289,14 +288,6 @@ html:not(.js) .field-ui .toggle, html:not(.js) .field-ui .lead, html:not(.js) .f
 .topnav.is-scrolled.on-dusk { background: color-mix(in srgb, var(--dusk) 86%, transparent); }
 .topnav.is-scrolled .topnav-name { opacity: 1; transform: none; pointer-events: auto; }
 
-/* ==========================================================================
-   RESEARCH — one statement, one real figure
-   ========================================================================== */
-.statement {
-  font-family: var(--serif); font-size: clamp(1.45rem, 2.3vw, 2.15rem); line-height: 1.24; letter-spacing: -0.014em;
-  max-width: 38ch; text-wrap: pretty;
-}
-.statement span { color: var(--mute); }
 .pubs-more { grid-column: 2; margin-top: 12px; padding-left: calc(2.2rem + 18px); }
 
 /* ==========================================================================
@@ -307,9 +298,16 @@ html:not(.js) .field-ui .toggle, html:not(.js) .field-ui .lead, html:not(.js) .f
   padding-top: clamp(80px, 10vw, 150px);
   background: linear-gradient(180deg, var(--mist) 0, #ede9e5 160px, var(--dusk) 460px, var(--dusk) 100%);
 }
+.about-intro { display: grid; gap: 22px; }
+.about-lead {
+  font-family: var(--serif); font-size: clamp(1.5rem, 2.55vw, 2.4rem); line-height: 1.17; letter-spacing: -0.018em;
+  max-width: 34ch; text-wrap: pretty;
+}
+.about-context { font-size: 15.5px; line-height: 1.55; color: var(--ink-2); max-width: 60ch; }
 .about-line {
-  font-family: var(--serif); font-size: clamp(1.75rem, 3.3vw, 3.15rem); line-height: 1.1; letter-spacing: -0.022em;
-  max-width: 21ch; text-wrap: balance;
+  margin-top: clamp(96px, 12vw, 170px); margin-left: calc((100% - 2 * var(--gap)) / 6 + var(--gap));
+  font-family: var(--serif); font-size: clamp(1.6rem, 2.8vw, 2.6rem); line-height: 1.12; letter-spacing: -0.02em;
+  max-width: 22ch; text-wrap: balance;
 }
 
 /* photographs + the atlas they belong to */
@@ -463,37 +461,84 @@ html:not(.js) .field-ui .toggle, html:not(.js) .field-ui .lead, html:not(.js) .f
 }
 @keyframes play { from { --p: 0%; } to { --p: 100%; } }
 
-/* the path so far, on one time axis */
-.path { margin: clamp(96px, 12vw, 170px) 0 0; }
-.path .label { display: block; margin-bottom: 22px; }
-.path-scroll { overflow-x: auto; scrollbar-width: thin; }
-.path-axis { position: relative; min-width: 760px; padding-bottom: 26px; }
-.path-lane { position: relative; height: 40px; }
-.path-lane li {
-  position: absolute; bottom: 6px;
-  left: calc((var(--a) - 2020) / 9 * 100%); width: calc((var(--b) - var(--a)) / 9 * 100%);
-  padding-bottom: 7px; border-bottom: 2px solid var(--ink);
-  font-size: 14px; line-height: 1.2; white-space: nowrap; color: var(--ink);
+
+/* ==========================================================================
+   TALKS & TEACHING
+   ========================================================================== */
+.tt { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px clamp(32px, 5vw, 80px); }
+.tt-item { padding-top: 18px; border-top: 1px solid var(--rule); }
+.tt-kind { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
+.tt-title { margin-top: 14px; font-family: var(--serif); font-weight: 400; font-size: clamp(1.35rem, 2vw, 1.8rem); line-height: 1.16; letter-spacing: -0.015em; text-wrap: pretty; }
+.tt-teach .tt-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.tt-num { font-size: 2.3em; line-height: .85; letter-spacing: -0.035em; color: var(--ink); }
+.tt-rug:empty { display: none; }
+.tt-rug { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 6px 5px; max-width: 460px; }
+.tt-rug span { display: inline-flex; gap: 2px; }                /* one practical session */
+.tt-rug i { width: 1.5px; height: 14px; background: var(--atmo-ink); opacity: .5; }
+.tt-where { margin-top: 14px; font-size: 15px; line-height: 1.55; color: var(--ink-2); max-width: 46ch; }
+
+/* ==========================================================================
+   PATH — scrolling moves a cursor through the stages
+   ========================================================================== */
+.path { margin: clamp(88px, 11vw, 150px) 0 0; }
+.path .label { display: block; margin-bottom: 26px; }
+.path-axis { position: relative; }
+.path-stages { position: relative; padding-top: 168px; display: grid; gap: 26px; }
+.stage-bar {
+  appearance: none; background: none; border: 0; cursor: pointer; padding: 0 0 7px;
+  position: absolute; top: calc(var(--lane) * 40px + 4px);
+  left: calc((var(--a) - 2022) / 7 * 100%); width: calc((var(--b) - var(--a)) / 7 * 100%);
+  border-bottom: 2px solid var(--ink); text-align: left; white-space: nowrap;
+  font-family: var(--sans); font-size: 13.5px; line-height: 1.2; color: var(--ink);
+  transition: color .45s, border-color .45s, opacity .45s;
 }
-.path-lane--minor li { border-bottom: 1px solid var(--ink-2); font-size: 12.5px; color: var(--ink-2); }
-.path-lane li.is-now {
-  color: var(--xai); border-bottom: 2px dotted var(--xai);
+.stage-bar span { pointer-events: none; }
+.stage:not(.is-phd):nth-child(n+2) .stage-bar { border-bottom-width: 1px; font-size: 12.5px; color: var(--ink-2); border-color: var(--ink-2); }
+.stage.is-phd .stage-bar {
+  color: var(--xai); border-bottom: 2px solid transparent;
   /* lived so far: solid; still ahead: dotted, like a forecast */
-  background: linear-gradient(var(--xai), var(--xai)) 0 100% / calc((2026.73 - var(--a)) / (var(--b) - var(--a)) * 100%) 2px no-repeat;
-  border-bottom-color: transparent;
+  background:
+    linear-gradient(var(--xai), var(--xai)) 0 100% / calc((2026.73 - var(--a)) / (var(--b) - var(--a)) * 100%) 2px no-repeat,
+    radial-gradient(circle, rgba(47, 63, 207, .5) 0 1px, transparent 1.3px) 0 100% / 5px 2px repeat-x;
 }
-.path-lane li.is-now::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: -2px; border-bottom: 2px dotted rgba(47, 63, 207, .45);
-  clip-path: inset(0 0 0 calc((2026.73 - var(--a)) / (var(--b) - var(--a)) * 100%));
-}
-.path-years { position: absolute; left: 0; right: 0; bottom: 0; display: flex; border-top: 1px solid var(--rule); }
+.path-years { position: absolute; left: 0; right: 0; top: 124px; display: flex; border-top: 1px solid var(--rule); }
 .path-years li { flex: 1; padding: 5px 0 0 5px; border-left: 1px solid var(--rule); font-family: var(--mono); font-size: 10.5px; color: var(--mute); }
 .path-now {
-  position: absolute; top: -6px; bottom: 0; left: calc((var(--a) - 2020) / 9 * 100%);
-  border-left: 1px solid var(--target); padding-left: 5px;
+  position: absolute; top: -8px; height: 148px; left: calc((2026.73 - 2022) / 7 * 100%);
+  border-left: 1px solid var(--target); padding-left: 5px; z-index: 1;
   font-family: var(--mono); font-size: 10px; letter-spacing: .06em; color: var(--target);
 }
-.path figcaption { margin-top: 18px; font-family: var(--mono); font-size: 11.5px; color: var(--mute); }
+.path-cursor { display: none; }
+.stage-copy { display: grid; grid-template-columns: minmax(0, 11rem) minmax(0, 1fr); gap: 2px 24px; align-items: baseline; }
+.stage-when { font-family: var(--mono); font-size: 11.5px; color: var(--mute); grid-row: 1 / 3; }
+.stage-name { font-family: var(--sans); font-weight: 600; font-size: 15.5px; line-height: 1.3; }
+.stage-text { font-family: var(--serif); font-size: 1.2rem; line-height: 1.35; color: var(--ink-2); max-width: 46ch; }
+
+/* scroll-driven, where there is room and motion is welcome */
+.path.is-scrolly { height: calc(100vh + 5 * 34vh); }
+.path.is-scrolly .path-sticky { position: sticky; top: max(96px, calc(50vh - 230px)); }
+.path.is-scrolly .path-stages { display: block; height: 150px; padding-top: 0; margin-bottom: 190px; }
+.path.is-scrolly .stage-bar { opacity: .32; }
+.path.is-scrolly .stage.is-past .stage-bar { opacity: .75; }
+.path.is-scrolly .stage.is-active .stage-bar { opacity: 1; color: var(--xai); border-color: var(--xai); }
+.path.is-scrolly .path-cursor {
+  display: block; position: absolute; top: -4px; height: 140px; z-index: 2;
+  left: calc((var(--cursor, 2022.65) - 2022) / 7 * 100%);
+  border-left: 1.5px solid var(--xai);
+}
+.path.is-scrolly .path-cursor::after {
+  content: ""; position: absolute; top: -3px; left: -4.5px; width: 7px; height: 7px; border-radius: 50%; background: var(--xai);
+}
+.path.is-scrolly .stage-copy {
+  position: absolute; top: 176px; width: min(36rem, 100%);
+  left: clamp(0%, calc((var(--a) - 2022) / 7 * 100%), calc(100% - 36rem));
+  display: block; opacity: 0; transform: translateY(12px); pointer-events: none;
+  transition: opacity .55s var(--ease), transform .65s var(--ease);
+}
+.path.is-scrolly .stage.is-active .stage-copy { opacity: 1; transform: none; }
+.path.is-scrolly .stage-when { display: block; }
+.path.is-scrolly .stage-name { margin-top: 4px; }
+.path.is-scrolly .stage-text { margin-top: 10px; font-size: clamp(1.3rem, 1.9vw, 1.7rem); line-height: 1.25; color: var(--ink); }
 
 /* ==========================================================================
    Motion + responsive recompositions
@@ -501,6 +546,7 @@ html:not(.js) .field-ui .toggle, html:not(.js) .field-ui .lead, html:not(.js) .f
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
   .record { animation: none !important; }
+  .js .stage { opacity: 1 !important; transform: none !important; }
 }
 
 @media (max-width: 1100px) {
@@ -525,6 +571,7 @@ html:not(.js) .field-ui .toggle, html:not(.js) .field-ui .lead, html:not(.js) .f
   .flow-row { grid-template-columns: minmax(0, 1fr); }
   .flow-row > .label { margin-bottom: 14px; padding-top: 0; }
   .pubs-more { grid-column: 1; padding-left: 0; }
+  .about-line { margin-left: 0; }
   .books { max-width: 440px; }
   .path-scroll { -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
   .leisure { grid-template-columns: 1fr; }
@@ -533,6 +580,17 @@ html:not(.js) .field-ui .toggle, html:not(.js) .field-ui .lead, html:not(.js) .f
 }
 
 @media (max-width: 699px) {
+  .tt { grid-template-columns: minmax(0, 1fr); }
+  /* the path turns vertical: one stage after another */
+  .stage-bar, .path-years, .path-now, .path-cursor { display: none !important; }
+  .path-stages { padding: 0 0 0 20px; margin-left: 4px; border-left: 1px solid var(--rule); gap: 30px; }
+  .stage { position: relative; }
+  .stage::before { content: ""; position: absolute; left: -24.5px; top: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--mist); border: 1.5px solid var(--ink-2); }
+  .stage.is-phd::before { border-color: var(--xai); background: var(--xai); }
+  .stage-copy { grid-template-columns: minmax(0, 1fr); }
+  .stage-when { grid-row: auto; }
+  .js .stage { opacity: 0; transform: translateY(14px); transition: opacity .6s var(--ease), transform .7s var(--ease); }
+  .js .stage.is-in { opacity: 1; transform: none; }
   /* photographs become a swipeable strip; the atlas follows along below */
   .notes { display: block; }
   .gallery {
